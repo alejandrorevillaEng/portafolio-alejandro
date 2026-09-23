@@ -84,9 +84,14 @@ export class Npc {
     // Las frases se leen del contenido cada vez: si cambia el idioma, cambian.
     const chatter = speaker(this.id)?.chatter ?? [];
     if (!this.busy && chatter.length && time >= this.nextChatterAt) {
-      const line = chatter[Phaser.Math.Between(0, chatter.length - 1)];
-      this.bubble.say(line, this.sprite.x, this.feetY - 38, time);
-      this.nextChatterAt = time + 3200 + Phaser.Math.Between(9000, 17000);
+      // Si ya hay dos vecinos hablando, espera un poco y vuelve a intentarlo.
+      if (!SpeechBubble.canSpeak()) {
+        this.nextChatterAt = time + Phaser.Math.Between(1500, 4000);
+      } else {
+        const line = chatter[Phaser.Math.Between(0, chatter.length - 1)];
+        this.bubble.say(line, this.sprite.x, this.feetY - 38, time);
+        this.nextChatterAt = time + 3200 + Phaser.Math.Between(9000, 17000);
+      }
     }
 
     if (this.busy) return;

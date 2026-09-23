@@ -11,6 +11,15 @@ import { emit } from '@/systems/bus';
  * borroso; en DOM se ve nitido a cualquier tamano.
  */
 export class SpeechBubble {
+  /** Como mucho, estos bocadillos a la vez en todo el mapa: mas seria ruido. */
+  static readonly MAX_AT_ONCE = 2;
+  private static active = 0;
+
+  /** Si ahora mismo cabe un bocadillo mas. */
+  static canSpeak(): boolean {
+    return SpeechBubble.active < SpeechBubble.MAX_AT_ONCE;
+  }
+
   private readonly key: string;
   private hideAt = 0;
   private shown = false;
@@ -22,6 +31,7 @@ export class SpeechBubble {
   }
 
   say(text: string, x: number, y: number, now: number, durationMs = 3200): void {
+    if (!this.shown) SpeechBubble.active++;
     this.shown = true;
     this.hideAt = now + durationMs;
     this.lastX = x;
@@ -32,6 +42,7 @@ export class SpeechBubble {
   hide(): void {
     if (!this.shown) return;
     this.shown = false;
+    SpeechBubble.active--;
     emit('bubble:hide', { key: this.key });
   }
 
