@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro-prueba1/">
-    <img src="docs/captura.png" alt="La aldea: portfolio jugable de Alejandro Revilla" width="720" />
+    <img src="docs/image.png" alt="La aldea: portfolio jugable de Alejandro Revilla" width="720" />
   </a>
 </p>
 
