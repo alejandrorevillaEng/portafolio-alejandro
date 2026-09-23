@@ -42,7 +42,7 @@ Sin backend: se publica como sitio estático.
 ## Cómo está organizado
 
 ```
-mapa/                   EL MAPA, en Tiled (ver mapa/LEEME.md)
+mapa/                   EL MAPA, en Tiled 
 ├─ aldea.tiled-project  proyecto: tipos de objeto y el comando "Exportar a la web"
 ├─ aldea.tmx            el mapa: suelo, edificios, decoración, vecinos, animales
 ├─ tilesets/*.tsx       un tileset por hoja del pack (con animaciones y autotile)
@@ -84,8 +84,6 @@ Tres reglas que mantienen esto ampliable:
 
 - Sprites y tiles: [Cute Fantasy RPG](https://kenmi-art.itch.io/cute-fantasy-rpg), de
   Kenmi (licencia de pago). No se incluyen en el repositorio porque la licencia no
-  permite redistribuirlos. Para trabajar en local, el pack va en la carpeta padre del
-  proyecto; `npm run tilesets` copia a `mapa/img` los tilesets del catálogo y
-  `npm run assets` copia a `public/assets` los sprites sueltos de `assets.ts`.
+  permite redistribuirlos.
 - Iconos de la interfaz: [Devicon](https://devicon.dev) (MIT),
   [Simple Icons](https://simpleicons.org) (CC0) y [Phosphor](https://phosphoricons.com) (MIT).
