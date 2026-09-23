@@ -1,0 +1,169 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+        {
+            "name": "Exportar a la web",
+            "command": "cmd",
+            "arguments": "/c npm run mapa",
+            "workingDirectory": "%mappath/..",
+            "enabled": true,
+            "saveBeforeExecute": true,
+            "showOutput": true,
+            "shortcut": "Ctrl+Shift+E"
+        }
+    ],
+    "compatibilityVersion": 1100,
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "properties": [],
+    "propertyTypes": [
+        {
+            "id": 1,
+            "name": "sprite-vecino",
+            "type": "enum",
+            "storageType": "string",
+            "values": [
+                "npc_katy",
+                "npc_bruno",
+                "npc_bob",
+                "npc_buba",
+                "npc_mike",
+                "npc_jack",
+                "npc_fin",
+                "npc_chloe"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 2,
+            "name": "mirada",
+            "type": "enum",
+            "storageType": "string",
+            "values": [
+                "down",
+                "up",
+                "left",
+                "right"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 3,
+            "name": "especie",
+            "type": "enum",
+            "storageType": "string",
+            "values": [
+                "chicken",
+                "rooster",
+                "duck",
+                "swan",
+                "cow",
+                "pig",
+                "sheep",
+                "butterfly",
+                "bee"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 4,
+            "name": "tipo-animal",
+            "type": "enum",
+            "storageType": "string",
+            "values": [
+                "walker",
+                "swimmer",
+                "flyer"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 5,
+            "name": "vecino",
+            "type": "class",
+            "useAs": [
+                "object"
+            ],
+            "color": "#ffe9b44c",
+            "drawFill": true,
+            "members": [
+                {
+                    "name": "sprite",
+                    "type": "string",
+                    "propertyType": "sprite-vecino",
+                    "value": "npc_bob"
+                },
+                {
+                    "name": "mirada",
+                    "type": "string",
+                    "propertyType": "mirada",
+                    "value": "down"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "animales",
+            "type": "class",
+            "useAs": [
+                "object"
+            ],
+            "color": "#ff55aaff",
+            "drawFill": true,
+            "members": [
+                {
+                    "name": "especie",
+                    "type": "string",
+                    "propertyType": "especie",
+                    "value": "chicken"
+                },
+                {
+                    "name": "tipo",
+                    "type": "string",
+                    "propertyType": "tipo-animal",
+                    "value": "walker"
+                },
+                {
+                    "name": "cantidad",
+                    "type": "int",
+                    "value": 1
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "cartel",
+            "type": "class",
+            "useAs": [
+                "object"
+            ],
+            "color": "#ffff7a00",
+            "drawFill": true,
+            "members": []
+        },
+        {
+            "id": 8,
+            "name": "humo",
+            "type": "class",
+            "useAs": [
+                "object"
+            ],
+            "color": "#ffdddddd",
+            "drawFill": true,
+            "members": []
+        },
+        {
+            "id": 9,
+            "name": "luz",
+            "type": "class",
+            "useAs": [
+                "object"
+            ],
+            "color": "#ffffd27a",
+            "drawFill": true,
+            "members": []
+        }
+    ]
+}

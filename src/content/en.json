@@ -1,0 +1,680 @@
+{
+  "ui": {
+    "readProfile": "Read the profile",
+    "journalTitle": "The full profile",
+    "journalHint": "Each section opens straight away, no walking required.",
+    "journalVisited": "Seen",
+    "journalContact": "Get in touch",
+    "continue": "Continue",
+    "viewSection": "View section",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "copy": "Copy",
+    "copied": "Copied",
+    "lang": "Change language",
+    "controls": "Tap the icon above each villager to read their section · Q opens the full profile",
+    "loading": "Preparing the village…",
+    "introTitle": "This village is my portfolio",
+    "introText": "Every villager carries the icon of their trade (the miner's pickaxe, the fisherman's rod…) and holds one part of my profile. Tap one to read it, or open the full profile if you'd rather get straight to it.",
+    "introExplore": "Explore the village",
+    "introRead": "Read the profile",
+    "headerName": "Alejandro Revilla Blanco",
+    "headerRole": "Backend · Databases · Applied AI",
+    "panHint": "Swipe to see the whole village",
+    "index": "Index",
+    "technology": "Technology",
+    "area": "Area",
+    "credentials": "credentials",
+    "issuer": "Issuer",
+    "date": "Date",
+    "verify": "Verify",
+    "status": "Status",
+    "downloadCv": "Download CV",
+    "leftOff": "You left off here",
+    "open": "Open",
+    "projectImage": "Screenshot of",
+    "photoAlt": "Photo of",
+    "badgeAlt": "Badge for",
+    "evidence": "Evidence",
+    "credential": "Credential",
+    "refPrefix": "AR"
+  },
+  "order": [
+    "sobre-mi",
+    "proyectos",
+    "backend",
+    "datos",
+    "ia",
+    "redes",
+    "certificaciones",
+    "aprendiendo",
+    "contacto",
+    "bienvenida"
+  ],
+  "npcs": {
+    "bienvenida": {
+      "name": "Chloe",
+      "role": "Village guide",
+      "dialogue": [
+        "Hi! This is Alejandro's village, and you can see all of it at a glance.",
+        "Every villager with an icon above them holds one part of his profile. Tap one and they'll tell you about it.",
+        "Rather get straight to it? \"Read the profile\" up top has everything in one place."
+      ],
+      "panel": "bienvenida",
+      "chatter": [
+        "Hi! Come on in.",
+        "Villagers with an icon above them can be tapped.",
+        "Press Q to see everything at once."
+      ]
+    },
+    "sobre-mi": {
+      "name": "Katy",
+      "role": "Innkeeper",
+      "dialogue": [
+        "Come in, come in. Sooner or later, everyone's news reaches the inn.",
+        "Alejandro? He's in his final year of Computer Engineering at UCAM.",
+        "Take a seat and I'll tell you who he is and what he's looking for."
+      ],
+      "panel": "sobre-mi",
+      "chatter": [
+        "Coffee while you look around?",
+        "Final year of university, nearly there.",
+        "Take a seat, it's cosy in here."
+      ]
+    },
+    "proyectos": {
+      "name": "Bob",
+      "role": "Market trader",
+      "dialogue": [
+        "Step into the market! Only a few stalls so far, but everything you see is real.",
+        "Only things that are built, or being built, get sold here.",
+        "Have a look at the goods."
+      ],
+      "panel": "proyectos",
+      "chatter": [
+        "Fresh stock!",
+        "Everything at this market is the real thing.",
+        "That middle stall gets people talking."
+      ]
+    },
+    "backend": {
+      "name": "Jack",
+      "role": "Blacksmith",
+      "dialogue": [
+        "Mind the sparks: this is where the APIs get forged.",
+        "Java and Spring Boot. That's where Alejandro feels at home.",
+        "A backend is like a tool: forge it well and it won't let you down halfway through the job."
+      ],
+      "panel": "backend",
+      "chatter": [
+        "This anvil never cools down.",
+        "Mind the sparks.",
+        "Java and Spring Boot, as always."
+      ]
+    },
+    "datos": {
+      "name": "Mike",
+      "role": "Miner",
+      "dialogue": [
+        "The good stuff is down below. Data isn't invented: it's mined.",
+        "Oracle, PL/SQL and data modelling. That's his deepest seam.",
+        "Come on, I'll show you what this mountain is made of."
+      ],
+      "panel": "datos",
+      "chatter": [
+        "This seam looks promising today.",
+        "You think more clearly down here.",
+        "Oracle and PL/SQL, the deepest seam."
+      ]
+    },
+    "ia": {
+      "name": "Buba",
+      "role": "Greenhouse gardener",
+      "dialogue": [
+        "Watch your step, everything in here is still growing.",
+        "It's the newest part of the village: building AI models into real applications.",
+        "You water it little by little and give it time, like anything that grows."
+      ],
+      "panel": "ia",
+      "chatter": [
+        "These plants need watering.",
+        "AI needs watering too.",
+        "Anything that grows takes patience."
+      ]
+    },
+    "certificaciones": {
+      "name": "Bruno",
+      "role": "Librarian",
+      "dialogue": [
+        "Quiet, please, this is a library. More or less.",
+        "We keep the certificates here: twelve of them, each one dated.",
+        "The Cisco track is complete, all three modules. Not everyone can say that."
+      ],
+      "panel": "certificaciones",
+      "chatter": [
+        "Shh… someone's reading.",
+        "Twelve certificates and counting.",
+        "The Cisco ones fill a whole shelf."
+      ]
+    },
+    "contacto": {
+      "name": "Fin",
+      "role": "Fisherman",
+      "dialogue": [
+        "Shhh, you'll scare them off.",
+        "If you've made it all the way to the pond, something caught your eye.",
+        "Then cast your line: here's how to reach him."
+      ],
+      "panel": "contacto",
+      "chatter": [
+        "Not many bites today.",
+        "Email's a kind of net too, right?",
+        "Cast your line, he usually answers."
+      ]
+    }
+  },
+  "signs": {
+    "redes": {
+      "name": "Windmill sign",
+      "role": "Sign",
+      "dialogue": [
+        "\"The mill never stops. Neither does the infrastructure.\"",
+        "Underneath, in small print: networking and systems."
+      ],
+      "panel": "redes"
+    },
+    "aprendiendo": {
+      "name": "Garden sign",
+      "role": "Sign",
+      "dialogue": [
+        "\"What's growing right now.\"",
+        "It's been sown. Nothing to harvest yet, but it's coming up."
+      ],
+      "panel": "aprendiendo"
+    }
+  },
+  "panels": {
+    "bienvenida": {
+      "type": "texto",
+      "place": "The square",
+      "title": "How the village works",
+      "summary": "What you'll find in each corner of the village.",
+      "intro": "This is Alejandro Revilla Blanco's portfolio. Instead of a page you scroll, a village you can take in at a glance: each villager holds one part of the profile.",
+      "items": [
+        "**Inn:** who I am and what I'm looking for.",
+        "**Market:** projects.",
+        "**Forge:** backend with Java and Spring Boot.",
+        "**Mine:** databases with Oracle, PL/SQL and data modelling.",
+        "**Greenhouse:** applied AI.",
+        "**Windmill:** networking and systems, CCNA and Linux.",
+        "**Chapel:** certifications.",
+        "**Garden:** what I'm learning right now.",
+        "**Pond:** contact."
+      ],
+      "note": "This village is a project too: it's built with Phaser 3, TypeScript and Tiled."
+    },
+    "sobre-mi": {
+      "type": "texto",
+      "place": "The inn",
+      "title": "About me",
+      "summary": "Who I am, what I'm good at and what I'm looking for.",
+      "intro": "I'm Alejandro Revilla Blanco, a final-year Computer Engineering student at UCAM (Murcia, Spain).",
+      "items": [
+        "A **backend** profile, with a strong **database** foundation and one foot in **applied AI**.",
+        "What I do best: getting the data model right before writing the first line of code.",
+        "An unusual starting point for a junior: five Oracle certifications and the complete Cisco CCNA track.",
+        "I'm looking for an **internship or a first junior role** as a Backend Developer or AI Application Developer."
+      ],
+      "note": "**Schedule:** classes on weekday afternoons. The rest of my time goes on CS50x, English and my own projects.",
+      "photo": "perfil/foto.png",
+      "cv": ""
+    },
+    "backend": {
+      "type": "skills",
+      "place": "The forge",
+      "title": "Backend",
+      "summary": "Java, Spring Boot and REST APIs.",
+      "intro": "Where the APIs get forged. This is the part of the craft I want to work in.",
+      "groups": [
+        {
+          "name": "Day to day",
+          "items": [
+            {
+              "name": "Java",
+              "icon": "java",
+              "evidence": "OCA Java SE 7 certification · Nov 2025"
+            },
+            {
+              "name": "Spring Boot",
+              "icon": "spring",
+              "evidence": "Studying it in depth this year, with microservices"
+            },
+            {
+              "name": "REST APIs",
+              "icon": "ph-plugs-connected"
+            },
+            {
+              "name": "Microservices",
+              "icon": "ph-cube",
+              "evidence": "Studying it this year with Spring Boot"
+            },
+            {
+              "name": "Git and GitHub",
+              "icon": "git",
+              "evidence": "Every project is on GitHub"
+            }
+          ]
+        },
+        {
+          "name": "I've also worked with",
+          "items": [
+            {
+              "name": "Python",
+              "icon": "python"
+            },
+            {
+              "name": "JavaScript",
+              "icon": "javascript"
+            },
+            {
+              "name": "Mobile development",
+              "icon": "ph-device-mobile"
+            },
+            {
+              "name": "Desktop development",
+              "icon": "ph-desktop"
+            }
+          ]
+        }
+      ],
+      "note": "**Oracle Certified Associate, Java SE 7 Programmer** certification (Nov 2025)."
+    },
+    "datos": {
+      "type": "skills",
+      "place": "The mine",
+      "title": "Databases",
+      "summary": "Oracle, PL/SQL and data modelling.",
+      "intro": "Data isn't invented: it's mined. This is my strongest ground and what sets me apart the most.",
+      "groups": [
+        {
+          "name": "Oracle",
+          "items": [
+            {
+              "name": "SQL",
+              "icon": "ph-database",
+              "evidence": "Database Programming with SQL I · Nov 2025"
+            },
+            {
+              "name": "PL/SQL",
+              "icon": "ph-brackets-curly",
+              "evidence": "Two PL/SQL certifications · Nov 2025"
+            },
+            {
+              "name": "Data modelling",
+              "icon": "ph-tree-structure",
+              "evidence": "Oracle Data Modeling and Relational Database Design · Nov 2025"
+            },
+            {
+              "name": "Relational design",
+              "icon": "ph-graph",
+              "evidence": "Oracle Data Modeling and Relational Database Design · Nov 2025"
+            },
+            {
+              "name": "Oracle APEX",
+              "icon": "ph-app-window"
+            }
+          ]
+        },
+        {
+          "name": "PostgreSQL and techniques",
+          "items": [
+            {
+              "name": "PostgreSQL",
+              "icon": "postgresql"
+            },
+            {
+              "name": "Schema design",
+              "icon": "ph-table"
+            },
+            {
+              "name": "Queries and subqueries",
+              "icon": "ph-funnel",
+              "evidence": "oracle-database-lab project"
+            },
+            {
+              "name": "Triggers",
+              "icon": "ph-lightning"
+            },
+            {
+              "name": "Dynamic SQL",
+              "icon": "ph-code"
+            }
+          ]
+        }
+      ],
+      "note": "Four Oracle Database Academy certifications, all from Nov 2025."
+    },
+    "ia": {
+      "type": "skills",
+      "place": "The greenhouse",
+      "title": "Applied AI",
+      "summary": "Language models built into applications.",
+      "intro": "The newest part of the village: connecting language models to applications that solve something specific.",
+      "groups": [
+        {
+          "name": "What I'm working on",
+          "items": [
+            {
+              "name": "LLM integration",
+              "icon": "ph-chat-circle-dots"
+            },
+            {
+              "name": "Generative applications",
+              "icon": "ph-sparkle"
+            },
+            {
+              "name": "Model APIs",
+              "icon": "ph-plugs-connected"
+            },
+            {
+              "name": "Microsoft Learn",
+              "icon": "ph-student",
+              "evidence": "Developing generative applications, in progress"
+            }
+          ]
+        }
+      ],
+      "note": "It's the branch I'm growing the most right now, always alongside backend work."
+    },
+    "redes": {
+      "type": "skills",
+      "place": "The windmill",
+      "title": "Networking and systems",
+      "summary": "The complete CCNA track and Linux.",
+      "intro": "The mill never stops, and neither does the infrastructure. I've completed the full CCNA track, not just a single module.",
+      "groups": [
+        {
+          "name": "Networking",
+          "items": [
+            {
+              "name": "IPv4 / IPv6",
+              "icon": "ph-globe",
+              "evidence": "CCNA: Introduction to Networks · Feb 2026"
+            },
+            {
+              "name": "TCP/IP",
+              "icon": "ph-network",
+              "evidence": "CCNA: Introduction to Networks · Feb 2026"
+            },
+            {
+              "name": "Inter-VLAN routing",
+              "icon": "ph-arrows-split",
+              "evidence": "CCNA: Switching, Routing and Wireless Essentials · Feb 2026"
+            },
+            {
+              "name": "OSPF",
+              "icon": "ph-path",
+              "evidence": "CCNA: Enterprise Networking, Security and Automation · Feb 2026"
+            },
+            {
+              "name": "Switching and wireless",
+              "icon": "ph-wifi-high",
+              "evidence": "CCNA: Switching, Routing and Wireless Essentials · Feb 2026"
+            },
+            {
+              "name": "Network security",
+              "icon": "ph-shield-check",
+              "evidence": "CCNA: Enterprise Networking, Security and Automation · Feb 2026"
+            }
+          ]
+        },
+        {
+          "name": "Systems",
+          "items": [
+            {
+              "name": "Linux",
+              "icon": "linux",
+              "evidence": "NDG Linux Essentials · Nov 2025"
+            },
+            {
+              "name": "Command line",
+              "icon": "bash",
+              "evidence": "NDG Linux Essentials · Nov 2025"
+            },
+            {
+              "name": "Virtualisation and SDN",
+              "icon": "ph-cloud",
+              "evidence": "CCNA: Enterprise Networking, Security and Automation · Feb 2026"
+            }
+          ]
+        }
+      ],
+      "note": "All three CCNA modules completed, with verifiable credentials."
+    },
+    "proyectos": {
+      "type": "proyectos",
+      "place": "The market",
+      "title": "Projects",
+      "summary": "What I've built or am building.",
+      "intro": "Only a few stalls so far, but none of them are filler.",
+      "items": [
+        {
+          "name": "scanner-fructosa",
+          "status": "In progress",
+          "stack": [
+            {
+              "name": "Web app",
+              "icon": "ph-globe"
+            }
+          ],
+          "text": "A web app that scans food products and shows how much fructose they contain. It comes from a real problem: people with fructose intolerance spend their whole shop reading labels.",
+          "link": "https://github.com/alejandrorevillaEng/scanner-fructosa",
+          "linkText": "View on GitHub",
+          "image": ""
+        },
+        {
+          "name": "The village (this portfolio)",
+          "status": "Live",
+          "stack": [
+            {
+              "name": "Phaser 3",
+              "icon": "ph-game-controller"
+            },
+            {
+              "name": "TypeScript",
+              "icon": "typescript"
+            },
+            {
+              "name": "Vite",
+              "icon": "vite"
+            },
+            {
+              "name": "Tiled",
+              "icon": "ph-map-pin"
+            }
+          ],
+          "text": "This very portfolio: a pixel-art village with a map designed in Tiled, villagers with their own routes and animations, and content in two languages. All the text lives in JSON, so extending it doesn't mean touching the code.",
+          "link": "https://github.com/alejandrorevillaEng",
+          "linkText": "View on GitHub",
+          "image": ""
+        },
+        {
+          "name": "oracle-database-lab",
+          "status": "Lab",
+          "stack": [
+            {
+              "name": "Oracle",
+              "icon": "ph-database"
+            },
+            {
+              "name": "SQL",
+              "icon": "ph-table"
+            },
+            {
+              "name": "PL/SQL",
+              "icon": "ph-brackets-curly"
+            }
+          ],
+          "text": "My SQL and data modelling workbook, with my university exercises. It isn't a product: it's public because it shows how I work.",
+          "link": "https://github.com/alejandrorevillaEng/oracle-database-lab",
+          "linkText": "View on GitHub",
+          "image": ""
+        }
+      ]
+    },
+    "certificaciones": {
+      "type": "certificaciones",
+      "place": "The chapel",
+      "title": "Certifications",
+      "summary": "Twelve certifications from Oracle, Cisco and Microsoft.",
+      "intro": "Twelve certifications, grouped by provider, each with its date.",
+      "shelves": [
+        {
+          "name": "Oracle",
+          "items": [
+            {
+              "name": "Oracle Certified Associate, Java SE 7 Programmer",
+              "org": "Oracle",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Database Programming with SQL I",
+              "org": "Oracle Database Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Oracle Data Modeling and Relational Database Design",
+              "org": "Oracle Database Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Oracle Database: PL/SQL Fundamentals",
+              "org": "Oracle Database Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Oracle Database: Develop PL/SQL Program Units",
+              "org": "Oracle Database Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            }
+          ],
+          "icon": "oracle"
+        },
+        {
+          "name": "Cisco",
+          "items": [
+            {
+              "name": "CCNA: Introduction to Networks",
+              "org": "Cisco",
+              "date": "Feb 2026",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "CCNA: Switching, Routing and Wireless Essentials",
+              "org": "Cisco",
+              "date": "Feb 2026",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "CCNA: Enterprise Networking, Security and Automation",
+              "org": "Cisco",
+              "date": "Feb 2026",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "NDG Linux Essentials",
+              "org": "Cisco Networking Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            }
+          ],
+          "icon": "cisco"
+        },
+        {
+          "name": "Microsoft and others",
+          "items": [
+            {
+              "name": "Software Development Fundamentals",
+              "org": "Microsoft Imagine Academy",
+              "date": "Nov 2025",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Mobile application development",
+              "org": "Fedeto Formación",
+              "date": "Jun 2023",
+              "verify": "",
+              "badge": ""
+            },
+            {
+              "name": "Video game design and concept art",
+              "org": "Fedeto Formación",
+              "date": "Mar 2023",
+              "verify": "",
+              "badge": ""
+            }
+          ],
+          "icon": "ph-certificate"
+        }
+      ],
+      "note": "The oldest one, in video game design, is where this village started."
+    },
+    "aprendiendo": {
+      "type": "texto",
+      "place": "The garden",
+      "title": "What I'm learning now",
+      "summary": "What I'm studying this year.",
+      "intro": "Sown and under way. Nothing to harvest yet, but it's coming up.",
+      "items": [
+        "**CS50x (Harvard):** algorithms and data structures, to strengthen the fundamentals.",
+        "**English B2:** preparing with EF SET and Cambridge Test & Train.",
+        "**Spring Boot and microservices:** going deeper into the part that interests me most.",
+        "**Microsoft Learn:** building generative AI applications."
+      ]
+    },
+    "contacto": {
+      "type": "contacto",
+      "place": "The pond",
+      "title": "Contact",
+      "summary": "Email, GitHub and LinkedIn.",
+      "intro": "If anything you've seen fits what you're looking for, write to me. I answer every message.",
+      "links": [
+        {
+          "label": "Email",
+          "value": "revillablancoalejandro@gmail.com",
+          "href": "mailto:revillablancoalejandro@gmail.com",
+          "icon": "ph-envelope-simple"
+        },
+        {
+          "label": "GitHub",
+          "value": "alejandrorevillaEng",
+          "href": "https://github.com/alejandrorevillaEng",
+          "icon": "github"
+        },
+        {
+          "label": "LinkedIn",
+          "value": "Alejandro Revilla Blanco",
+          "href": "https://linkedin.com/in/alejandro-revilla-blanco-2219053b0",
+          "icon": "linkedin"
+        }
+      ],
+      "note": "I'm looking for an internship or a first junior role as a Backend Developer or AI Application Developer."
+    }
+  }
+}

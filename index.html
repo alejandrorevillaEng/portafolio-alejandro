@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Alejandro Revilla · Portfolio</title>
+
+    <meta
+      name="description"
+      content="Portfolio de Alejandro Revilla, estudiante de 4º de Ingeniería Informática en la UCAM. Desarrollo backend con Java y Spring Boot, bases de datos Oracle y PL/SQL, redes Cisco CCNA e IA aplicada. Recorre la aldea y habla con sus habitantes."
+    />
+    <meta name="author" content="Alejandro Revilla Blanco" />
+    <meta name="theme-color" content="#111312" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Alejandro Revilla · Portfolio jugable" />
+    <meta
+      property="og:description"
+      content="Una aldea en pixel art donde cada vecino te cuenta una parte de mi perfil: backend en Java y Spring Boot, bases de datos Oracle, redes CCNA e IA aplicada."
+    />
+    <meta property="og:image" content="./og-cover.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png?v=2" />
+    <link rel="icon" type="image/png" sizes="96x96" href="./favicon.png?v=2" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=2" />
+    <!-- Solo el fondo y la pantalla de carga van en linea, para que no haya un
+         destello blanco antes de que llegue la hoja de estilos. El layout del
+         marco vive en src/ui/styles.css (una sola fuente). -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #111312;
+      }
+      #loading {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: #111312;
+      }
+      #seo-content {
+        position: absolute;
+        left: -9999px;
+      }
+    </style>
+    <!-- Bricolage Grotesque para titulos: una grotesca con caracter que no es la
+         Inter de siempre. El texto corrido usa la fuente del sistema. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&display=swap"
+    />
+    <link rel="stylesheet" href="./src/ui/styles.css" />
+  </head>
+  <body>
+    <!-- Contenido base para buscadores y para quien llegue sin JS. -->
+    <div id="seo-content" hidden>
+      <h1>Alejandro Revilla Blanco</h1>
+      <p>
+        Estudiante de 4º y último año de Ingeniería Informática en la UCAM (Murcia).
+        Perfil backend con base fuerte en bases de datos e IA aplicada. Busco prácticas
+        o primer empleo junior como Backend Developer o AI Application Developer.
+      </p>
+      <h2>Tecnologías</h2>
+      <p>
+        Java · Spring Boot · microservicios · APIs REST · Oracle SQL · PL/SQL ·
+        Oracle APEX · PostgreSQL · Modelado de datos · Cisco CCNA · Linux · Git
+      </p>
+      <h2>Certificaciones</h2>
+      <p>
+        Oracle Certified Associate Java SE 7 Programmer · Oracle Database Academy (SQL,
+        PL/SQL, Data Modeling) · CCNA Introduction to Networks · CCNA Switching, Routing
+        and Wireless Essentials · CCNA Enterprise Networking, Security and Automation ·
+        NDG Linux Essentials · Software Development Fundamentals (Microsoft)
+      </p>
+      <h2>Contacto</h2>
+      <ul>
+        <li><a href="mailto:revillablancoalejandro@gmail.com">revillablancoalejandro@gmail.com</a></li>
+        <li><a href="https://github.com/alejandrorevillaEng">github.com/alejandrorevillaEng</a></li>
+        <li>
+          <a href="https://linkedin.com/in/alejandro-revilla-blanco-2219053b0"
+            >linkedin.com/in/alejandro-revilla-blanco-2219053b0</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <noscript>
+      <style>
+        #seo-content { display: block !important; }
+        #loading, #game { display: none !important; }
+      </style>
+      <p><strong>Esta aldea necesita JavaScript.</strong> Mis datos de contacto:</p>
+    </noscript>
+
+    <div id="loading">
+      <div class="loading-box">
+        <p class="loading-title">Alejandro Revilla</p>
+        <div class="loading-bar"><span id="loading-fill"></span></div>
+        <p class="loading-hint" id="loading-hint">Preparando la aldea…</p>
+      </div>
+    </div>
+
+    <div id="stage">
+      <!-- Cabecera para movil en vertical: nombre, rol y acceso al perfil. La
+           rellena ui.ts desde content/*.json. -->
+      <header id="stage-header"></header>
+      <!-- En pantallas estrechas el mapa es mas ancho que la ventana y se
+           arrastra en horizontal; en el resto, solo centra el marco. -->
+      <div id="stage-scroll">
+        <div id="stage-frame">
+          <div id="game"></div>
+          <div id="ui-root"></div>
+        </div>
+      </div>
+      <p id="pan-hint"></p>
+    </div>
+
+    <!-- Paneles, indice, dialogo y bienvenida: fijos a la ventana, fuera del
+         marco del mapa, para que en movil no queden encerrados en el. -->
+    <div id="overlay-root"></div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

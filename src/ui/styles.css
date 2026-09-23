@@ -1,0 +1,1768 @@
+/*
+ * Interfaz del portfolio.
+ *
+ * Direccion: hoja tecnica. El protagonista del primer vistazo es el mapa pixel
+ * art; todo lo que se lee se abre a pantalla completa como la ficha tecnica de
+ * un componente: numerada, con filetes, tablas que se escanean en segundos y
+ * cada afirmacion respaldada por una fila (tecnologia, credencial, repositorio).
+ *
+ * Sistema (no inventar valores fuera de aqui):
+ *   - Color: neutros frios + UN acento verde, reservado para "verificado / leido".
+ *     El unico color extra son los logos de tecnologias, en su color real.
+ *     Sin degradados, sin brillos, sin franjas de color en los laterales.
+ *   - Filetes: 2 px de tinta abren cada bloque; 1 px gris separa filas.
+ *   - Tipo: Bricolage Grotesque en titulos; fuente del sistema para leer;
+ *     monoespaciada SOLO para cifras (numero de hoja, fechas, cuentas).
+ *   - Forma: hojas a sangre (sin radio); 8 en botones, casillas de logo y
+ *     capturas; 4 en marcas pequenas.
+ *   - Movimiento: entradas de 200-280 ms con salida fuerte; salidas mas cortas;
+ *     al pasar de hoja, la nueva entra por el lado hacia el que se lee.
+ *
+ * Orden: tokens · base · escenario · controles · capas (dialogo, hojas,
+ * indice, bienvenida) · responsive · movimiento reducido.
+ */
+
+/* --- tokens --------------------------------------------------------------- */
+
+:root {
+  /* Escenario (alrededor del mapa) */
+  --stage: #111312;
+  --stage-line: #262a28;
+
+  /* Hojas claras */
+  --paper: #ffffff;
+  --paper-2: #f3f5f6;
+  --line: #dde1e4;
+  --ink: #121417;
+  --ink-2: #474e56;
+  --ink-3: #676f78;
+
+  /* El unico acento: verde de la hierba de la aldea. Significa "verificado / leido". */
+  --accent: #1f6b45;
+  --accent-soft: #e5f0e9;
+
+  --scrim: rgba(12, 14, 13, 0.55);
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font: system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+
+  --r-sheet: 12px;
+  --r-control: 8px;
+  --r-mark: 4px;
+
+  /* Margen lateral de las hojas: crece con la pantalla y centra una columna de 1240. */
+  --gutter: max(16px, min(5vw, 56px), calc((100vw - 1240px) / 2));
+
+  --rule: 2px solid var(--ink);
+  --hair: 1px solid var(--line);
+
+  --shadow-sheet: 0 24px 64px rgba(0, 0, 0, 0.28);
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  /* Curvas de salida fuertes: arrancan rapido y frenan suave. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --z-overlay: 50;
+  --z-loading: 100;
+}
+
+/* --- base ----------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--stage);
+  color: #f2f3f1; /* texto claro sobre el escenario; cada hoja pone su tinta */
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+/* Cifras (numeros de hoja, cuentas, fechas): monoespaciada y de ancho fijo. */
+.num {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- pantalla de carga ---------------------------------------------------- */
+
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-loading);
+  display: grid;
+  place-items: center;
+  background: var(--stage);
+  transition: opacity 0.5s ease;
+}
+
+#loading.done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-box {
+  text-align: center;
+  width: min(280px, 80vw);
+}
+
+.loading-title {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: #f2f3f1;
+}
+
+.loading-bar {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--stage-line);
+  overflow: hidden;
+}
+
+/* La barra crece con transform (no con width): no obliga a recalcular el layout. */
+.loading-bar span {
+  display: block;
+  height: 100%;
+  background: #6fbf8c;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.loading-hint {
+  margin: 12px 0 0;
+  font-size: 0.85rem;
+  color: #9aa29d;
+}
+
+#seo-content {
+  position: absolute;
+  left: -9999px;
+}
+
+/* --- escenario: mapa y marco ---------------------------------------------- */
+
+/*
+ * El canvas se dibuja SIEMPRE a 832x576 y el CSS agranda el marco entero. Aqui
+ * solo se decide de que tamano se ve ese marco.
+ */
+#stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--stage);
+}
+
+#stage-header {
+  display: none;
+}
+
+#stage-scroll {
+  display: flex;
+  max-width: 100%;
+}
+
+#stage-frame {
+  position: relative;
+  flex: none;
+  margin-inline: auto; /* centra; y si desborda, no recorta el lado izquierdo */
+  aspect-ratio: 832 / 576;
+  width: min(calc(100vw - 32px), calc((100vh - 32px) * 1.4444444));
+  width: min(calc(100vw - 32px), calc((100dvh - 32px) * 1.4444444));
+  border-radius: var(--r-sheet);
+  outline: 1px solid var(--stage-line);
+  overflow: hidden;
+  background: #1d2b1a;
+  /* Los controles de dentro se dimensionan con el marco (unidades cqw). */
+  container-type: inline-size;
+  container-name: frame;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+}
+
+#game canvas {
+  image-rendering: pixelated;
+  display: block;
+}
+
+#ui-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#ui-root > * {
+  pointer-events: auto;
+}
+
+#pan-hint {
+  display: none;
+}
+
+/* --- controles ------------------------------------------------------------ */
+
+/* Iconos: el SVG llena su caja; los de Phosphor toman el color del texto. */
+.icon {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sin archivo de logo: las iniciales, en una casilla que ocupa lo mismo. */
+.icon-monogram {
+  font: 700 0.55em/1 var(--mono);
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-mark);
+}
+
+/* Boton: 44 px de alto, texto corto, icono a la izquierda. */
+.btn {
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55em;
+  min-height: 44px;
+  padding: 0.55em 1.1em;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.btn .icon {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+/* La flecha de "sale de la web" va detras del texto y un punto mas discreta. */
+.icon-trail {
+  opacity: 0.6;
+  width: 0.95em;
+  height: 0.95em;
+  transition: transform 150ms var(--ease-out);
+}
+
+/* Al pulsar, el boton cede un poco: confirma que el clic se ha oido. */
+.btn:active,
+.icon-btn:active,
+.nav-btn:active,
+.journal-entry:active,
+.contact-row:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  color: #fff;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-quiet {
+  background: transparent;
+  border-color: transparent;
+}
+
+.btn-large {
+  min-height: 52px;
+  font-size: 1rem;
+  padding-inline: 1.3em;
+}
+
+.btn-small {
+  min-height: 36px;
+  font-size: 0.86rem;
+  padding: 0.4em 0.85em;
+}
+
+/* Copiado: el acento significa "hecho", igual que "leido" en el indice. */
+.btn.is-done {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.icon-btn {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font: inherit;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-control);
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.text-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(31, 107, 69, 0.3);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease;
+}
+
+/* La tecla Q solo tiene sentido con teclado y raton. */
+.kbd {
+  display: none;
+  font: 600 0.72em/1 var(--mono);
+  padding: 0.3em 0.45em;
+  border-radius: var(--r-mark);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.btn:not(.btn-primary) .kbd {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .kbd {
+    display: inline-block;
+  }
+
+  .btn:hover {
+    background: var(--paper-2);
+    border-color: #c9ced3;
+  }
+
+  .btn-quiet:hover {
+    border-color: transparent;
+  }
+
+  .btn-primary:hover {
+    background: #2b3036;
+    border-color: #2b3036;
+  }
+
+  a.btn:hover .icon-trail,
+  .contact-row:hover .icon-trail {
+    transform: translate(2px, -2px);
+  }
+
+  .icon-btn:hover {
+    background: var(--paper-2);
+    border-color: #c9ced3;
+  }
+
+  .text-link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Botones sobre el mapa: crecen y encogen con el marco. */
+.hud {
+  position: absolute;
+  top: 1.4cqw;
+  right: 1.4cqw;
+  font-size: clamp(11px, 1.25cqw, 15px);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.hud .btn {
+  font-size: 1em;
+  min-height: 0;
+  border-color: transparent;
+  box-shadow: var(--shadow-control);
+}
+
+.hint-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 1.6cqw;
+  transform: translateX(-50%);
+  font-size: clamp(11px, 1.1cqw, 14px);
+  color: #eef0ee;
+  background: rgba(17, 19, 18, 0.78);
+  padding: 0.5em 1em;
+  border-radius: var(--r-control);
+  white-space: nowrap;
+  max-width: 94%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@container frame (max-width: 560px) {
+  .hint-bar {
+    display: none;
+  }
+}
+
+/* --- texto sobre el mapa (bocadillos, etiqueta de marcador) ------------------ */
+
+/* Ocupa el marco entero; los textos se colocan en % del mundo (ver worldText.ts). */
+.world-text {
+  position: absolute;
+  inset: 0;
+  pointer-events: none !important;
+  font-size: clamp(11px, 1.2cqw, 16px);
+}
+
+/* Bocadillo: hoja blanca con su pico, anclado por abajo a la cabeza del vecino. */
+.world-bubble,
+.world-label {
+  position: absolute;
+  margin: 0;
+  max-width: 17em;
+  padding: 0.45em 0.75em;
+  font-family: var(--font);
+  font-size: 1em;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--ink);
+  background: var(--paper);
+  border-radius: var(--r-control);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 4px 10px rgba(0, 0, 0, 0.18);
+  transform: translate(-50%, calc(-100% - 0.6em));
+  width: max-content;
+  text-wrap: balance;
+}
+
+.world-bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.4em;
+  width: 0.8em;
+  height: 0.8em;
+  background: var(--paper);
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 2px;
+}
+
+.world-bubble {
+  opacity: 0;
+  transition: opacity 160ms var(--ease-out);
+}
+
+.world-bubble[data-state='open'] {
+  opacity: 1;
+}
+
+/* La etiqueta del marcador: una linea, en negrita, sin pico. */
+.world-label {
+  max-width: none;
+  white-space: nowrap;
+  font-weight: 650;
+  padding: 0.35em 0.65em;
+  transform: translate(-50%, calc(-100% - 0.35em));
+}
+
+/* --- capas: comun ---------------------------------------------------------- */
+
+#overlay-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+}
+
+#overlay-root > * {
+  pointer-events: auto;
+}
+
+/* Hoja clara: la superficie de todo lo que se lee. Solo sombra, sin borde. */
+.sheet {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--r-sheet);
+  box-shadow: var(--shadow-sheet);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--scrim);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+[data-state='open'] > .scrim {
+  opacity: 1;
+}
+
+.sheet h2,
+.sheet h3 {
+  font-family: var(--font-display);
+}
+
+/* --- dialogo -------------------------------------------------------------- */
+
+.dialogue {
+  position: fixed;
+  left: 50%;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: min(600px, calc(100vw - 24px));
+  padding: 16px 18px 14px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.dialogue[data-state='open'] {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.dialogue-who {
+  font-weight: 650;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.dialogue-who small {
+  color: var(--ink-3);
+  font-weight: 400;
+  font-size: 0.85rem;
+  margin-left: 8px;
+}
+
+.dialogue-text {
+  margin: 0;
+  min-height: 3.1em;
+  line-height: 1.55;
+  font-size: 1rem;
+  color: var(--ink-2);
+}
+
+.dialogue-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* --- hojas de seccion (pantalla completa) ------------------------------------ */
+
+/*
+ * La capa ES la hoja: tapa la pantalla entera, con cabecera, cuerpo con scroll
+ * propio y una barra fija abajo para pasar de seccion.
+ */
+.panel-layer {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 260ms var(--ease-drawer),
+    transform 260ms var(--ease-drawer);
+}
+
+.panel-layer[data-state='open'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Salida mas rapida que la entrada: el sistema responde, no hace esperar. */
+.panel-layer[data-state='closed'] {
+  transition-duration: 160ms;
+}
+
+.panel {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.panel h2,
+.panel h3,
+.journal h2 {
+  font-family: var(--font-display);
+}
+
+/* Cabecera: referencia, titulo y lugar | cerrar. Cierra con el filete grueso. */
+.panel-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0 clamp(16px, 3vw, 36px);
+  padding: clamp(18px, 3.2vh, 36px) var(--gutter) clamp(16px, 2.6vh, 28px);
+  border-bottom: var(--rule);
+}
+
+/* "AR·03 / 10": la referencia de la hoja, a escala de referencia. */
+.sheet-ref {
+  margin: 0 0 12px;
+  font-family: var(--mono);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--ink-3);
+  overflow: hidden; /* el numero entra rodando desde abajo */
+}
+
+.ref-num {
+  display: inline-block;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.panel-titles h2 {
+  margin: 0;
+  outline: none; /* recibe el foco al abrir o pasar de hoja, para anunciarla */
+  font-size: clamp(2.1rem, 5.4vw, 4.5rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+/* Donde vive la seccion en la aldea: debajo del titulo, como pie discreto. */
+.panel-where {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-3);
+}
+
+.panel-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+/* Cuerpo: resumen (4 columnas) y ficha (8), como una hoja tecnica. */
+.sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 40px clamp(24px, 3.4vw, 48px);
+  padding: clamp(24px, 4vh, 44px) var(--gutter) 56px;
+}
+
+.sheet-summary {
+  grid-column: span 4;
+  align-self: start;
+  position: sticky;
+  top: 0;
+}
+
+.sheet-main {
+  grid-column: span 8;
+  min-width: 0;
+}
+
+.sheet-summary {
+  padding-top: 14px;
+  border-top: var(--rule);
+}
+
+.lead {
+  margin: 0;
+  font-size: 1.14rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.note {
+  margin: 20px 0 0;
+  padding-top: 14px;
+  border-top: var(--hair);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.sheet-summary .btn {
+  margin-top: 20px;
+}
+
+/* La foto viene ya recortada en circulo (PNG con transparencia). */
+.summary-photo {
+  display: block;
+  width: 168px;
+  height: 168px;
+  object-fit: cover;
+  margin-bottom: 22px;
+  border-radius: 50%;
+}
+
+.sheet-main strong {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+/* Texto: filas numeradas, como las notas de una hoja tecnica. */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: var(--rule);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  padding: 18px 0;
+  border-bottom: var(--hair);
+}
+
+.row-num {
+  font: 500 0.9rem/1.7 var(--mono);
+  color: var(--ink-3);
+}
+
+.row p {
+  margin: 0;
+  max-width: 64ch;
+  font-size: 1.06rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/*
+ * Tecnologias: una tabla por grupo, como la tabla de caracteristicas de una
+ * ficha: logo y nombre a la izquierda, lo que lo respalda a la derecha.
+ */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.spec-table + .spec-table {
+  margin-top: 40px;
+}
+
+.spec-table caption {
+  padding: 12px 0 14px;
+  border-top: var(--rule);
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.spec-table caption .num {
+  float: right;
+  margin-top: 0.3em;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+.spec-table thead th,
+.cred-table thead th {
+  padding: 0 16px 8px 0;
+  border-bottom: 1px solid var(--ink);
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+
+.spec-table thead th:first-child {
+  width: 44%;
+}
+
+.spec-table tbody th,
+.spec-table td {
+  padding: 11px 16px 11px 0;
+  border-bottom: var(--hair);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.evidence {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+
+.tech {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.spec-table .tech > .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.spec-table .tech > .icon-glyph {
+  color: var(--ink-2);
+}
+
+.spec-table .tech > .icon-monogram {
+  font-size: 0.7rem;
+}
+
+/* Casilla del icono de contacto: todos del mismo tamano. */
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  padding: 9px;
+  border-radius: var(--r-control);
+  background: var(--paper-2);
+}
+
+.tech-name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Proyectos: cada uno abre con el filete grueso; nada de tarjetas flotantes. */
+.project {
+  padding: 16px 0 32px;
+  border-top: var(--rule);
+}
+
+.project-shot {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin-bottom: 18px;
+  border: var(--hair);
+  border-radius: var(--r-control);
+  background: var(--paper-2);
+}
+
+.project-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.project-head h3 {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* Estado del proyecto: una marca con borde, no una pastilla de color. */
+.status {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--ink-2);
+  padding: 3px 8px;
+  border: 1px solid #c3c9ce;
+  border-radius: var(--r-mark);
+  white-space: nowrap;
+}
+
+.project-text {
+  margin: 12px 0 0;
+  max-width: 64ch;
+  font-size: 1.04rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Stack: especificaciones en linea (logo + nombre), no botones. */
+.project-stack {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+}
+
+.project-stack .tech {
+  gap: 8px;
+}
+
+.project-stack .tech > .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.project-stack .tech-name {
+  font-size: 0.88rem;
+}
+
+.project-link {
+  margin-top: 20px;
+}
+
+/* Certificaciones: marca tranquila del proveedor + banda densa de credenciales. */
+.provider {
+  display: grid;
+  grid-template-columns: minmax(150px, 13rem) minmax(0, 1fr);
+  gap: 24px clamp(20px, 3vw, 40px);
+  padding: 16px 0 32px;
+  border-top: var(--rule);
+}
+
+/* Las marcas de proveedor son logotipos anchos: mandan la altura, no un cuadrado. */
+.provider-icon {
+  justify-items: start;
+  width: auto;
+  min-width: 32px;
+  max-width: 120px;
+  height: 26px;
+}
+
+.provider-icon svg {
+  width: auto;
+  max-width: 100%;
+}
+
+.provider-icon.icon-glyph {
+  color: var(--ink-2);
+}
+
+.provider-mark h3 {
+  margin: 14px 0 0;
+  font-size: 1.3rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.provider-count {
+  margin: 4px 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-3);
+}
+
+/* La banda densa: una linea por credencial, fecha alineada a la derecha. */
+.cred-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cred-table tbody th,
+.cred-table td {
+  padding: 9px 16px 9px 0;
+  border-bottom: var(--hair);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.cred-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.cred-org {
+  font-size: 0.86rem;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.cred-table .cred-date {
+  padding-right: 0;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.cred-table thead .cred-date {
+  font-family: var(--font);
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+
+.cred-badge {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.cred-verify {
+  margin-left: 10px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid rgba(31, 107, 69, 0.35);
+  border-radius: var(--r-control);
+}
+
+/* Contacto: el correo manda; el resto, en filas. */
+.contact-primary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-primary .btn-primary {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.contact-rows {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  border-top: var(--rule);
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 44px 8rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: var(--hair);
+  text-decoration: none;
+  transition:
+    background-color 150ms ease,
+    transform 120ms var(--ease-out);
+}
+
+.contact-label {
+  font-size: 0.9rem;
+  color: var(--ink-3);
+}
+
+.contact-value {
+  font-size: 1.05rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Barra de abajo: anterior | indice | siguiente. Siempre a la vista. */
+.panel-nav {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--gutter) max(10px, env(safe-area-inset-bottom));
+  border-top: var(--rule);
+  background: var(--paper);
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  min-height: 56px;
+  padding: 6px 10px;
+  margin: 0 -10px;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-control);
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 150ms ease;
+}
+
+.nav-next {
+  justify-self: end;
+  text-align: right;
+}
+
+.nav-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.nav-label {
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--ink-3);
+}
+
+.nav-title {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-arrow {
+  width: 44px;
+  height: 44px;
+  padding: 11px;
+  border: var(--hair);
+  border-radius: var(--r-control);
+  transition: transform 150ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-btn:hover {
+    background: var(--paper-2);
+  }
+
+  .nav-next:hover .nav-arrow {
+    transform: translateX(3px);
+  }
+
+  .nav-prev:hover .nav-arrow {
+    transform: translateX(-3px);
+  }
+
+  .contact-row:hover {
+    background: var(--paper-2);
+  }
+
+  .cred-verify:hover {
+    background: var(--accent-soft);
+  }
+}
+
+/*
+ * Pasar de hoja: la nueva entra por el lado hacia el que se lee y el numero
+ * rueda desde abajo. Solo al cambiar de seccion (data-dir 1 / -1); al abrir,
+ * la capa entera ya tiene su propia entrada.
+ */
+@keyframes sheet-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+@keyframes sheet-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+}
+
+@keyframes ref-roll {
+  from {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+}
+
+.panel[data-dir='1'] :is(.panel-titles, .sheet-grid) {
+  animation: sheet-from-right 280ms var(--ease-out);
+}
+
+.panel[data-dir='-1'] :is(.panel-titles, .sheet-grid) {
+  animation: sheet-from-left 280ms var(--ease-out);
+}
+
+.panel:is([data-dir='1'], [data-dir='-1']) .ref-num {
+  animation: ref-roll 320ms var(--ease-out);
+}
+
+/* --- indice (el perfil completo) ---------------------------------------------- */
+
+.journal-layer {
+  position: fixed;
+  inset: 0;
+}
+
+.journal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(440px, 100vw);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 0;
+  box-shadow: var(--shadow-sheet);
+  opacity: 0;
+  transform: translateX(24px);
+  transition:
+    opacity 220ms var(--ease-drawer),
+    transform 220ms var(--ease-drawer);
+}
+
+.journal-layer[data-state='open'] .journal {
+  opacity: 1;
+  transform: none;
+}
+
+.journal-layer[data-state='closed'] .journal,
+.journal-layer[data-state='closed'] .scrim {
+  transition-duration: 140ms;
+}
+
+.journal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px 20px 16px 24px;
+  border-bottom: var(--rule);
+}
+
+.journal-head h2 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.journal-head p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.journal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+/* Cada entrada: numero de hoja | titulo y resumen | estado. */
+.journal-entry {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: var(--hair);
+  padding: 14px 20px 14px 24px;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 150ms ease;
+}
+
+.journal-entry:focus-visible {
+  outline-offset: -3px;
+  background: var(--paper-2);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .journal-entry:hover {
+    background: var(--paper-2);
+  }
+}
+
+.entry-num {
+  font: 500 0.95rem/1.45 var(--mono);
+  color: var(--ink-3);
+}
+
+.entry-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.entry-title {
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  font-weight: 650;
+}
+
+.entry-summary {
+  font-size: 0.87rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+/* Estado como marca: solo lo leido lleva su check (el acento = leido). */
+.entry-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.entry-state .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.entry-last {
+  margin-top: 6px;
+  padding: 2px 7px;
+  font-size: 0.75rem;
+  font-weight: 650;
+  border: 1px solid var(--ink);
+  border-radius: var(--r-mark);
+}
+
+.journal-entry.is-last .entry-num {
+  color: var(--ink);
+}
+
+.journal-foot {
+  padding: 16px 24px 20px;
+  border-top: var(--rule);
+}
+
+.journal-foot h3 {
+  margin: 0 0 10px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--ink-3);
+}
+
+.journal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journal-links .btn .icon {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* --- bienvenida ------------------------------------------------------------ */
+
+.intro-layer {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.intro-card {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 28px 28px 24px;
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition:
+    opacity 260ms var(--ease-out),
+    transform 260ms var(--ease-out);
+}
+
+.intro-layer[data-state='open'] .intro-card {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-layer[data-state='closed'] .intro-card,
+.intro-layer[data-state='closed'] .scrim {
+  transition-duration: 150ms;
+}
+
+.intro-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.6rem;
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.intro-card p {
+  margin: 0 0 22px;
+  color: var(--ink-2);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* --- responsive ------------------------------------------------------------ */
+
+/*
+ * Movil y tablet en vertical. La cabecera ocupa el hueco que antes quedaba
+ * vacio, y el mapa se ve lo bastante grande como para tocar a los vecinos:
+ * si no cabe a lo ancho, se arrastra en horizontal.
+ */
+@media (orientation: portrait) and (max-width: 900px) {
+  #stage {
+    gap: 14px;
+    padding: max(16px, env(safe-area-inset-top)) 0 max(16px, env(safe-area-inset-bottom));
+  }
+
+  #stage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    width: 100%;
+    padding: 0 16px;
+    color: #f2f3f1;
+  }
+
+  .stage-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+  }
+
+  .stage-role {
+    margin: 2px 0 0;
+    font-size: 0.88rem;
+    color: #a9b1ac;
+  }
+
+  #stage-header .btn:not(.btn-primary) {
+    color: #f2f3f1;
+    background: transparent;
+    border-color: #3a403d;
+  }
+
+  #stage-header .btn-primary {
+    color: var(--ink);
+    background: #f2f3f1;
+    border-color: #f2f3f1;
+  }
+
+  #stage-header .kbd {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  #stage-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 4px 16px 10px;
+    scrollbar-width: none;
+  }
+
+  #stage-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  #stage-frame {
+    width: auto;
+    height: max(calc((100vw - 32px) / 1.4444444), min(56dvh, 520px));
+  }
+
+  /* Los botones del mapa ya estan en la cabecera, y la ayuda se cortaria en
+     un mapa mas ancho que la pantalla: la sustituye la pista de arrastre. */
+  .hud,
+  .hint-bar {
+    display: none;
+  }
+
+  #pan-hint {
+    display: block;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #8e9691;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  #pan-hint.visible {
+    opacity: 1;
+  }
+}
+
+/* Tablet y portatil pequeno: el resumen pasa arriba, a lo ancho. */
+@media (max-width: 960px) {
+  .sheet-summary,
+  .sheet-main {
+    grid-column: 1 / -1;
+  }
+
+  .sheet-summary {
+    position: static;
+  }
+
+  .sheet-grid {
+    gap: 32px;
+  }
+}
+
+/* Movil: cabecera en dos filas, filas mas compactas, el indice sube desde abajo. */
+@media (max-width: 640px) {
+  .panel-head {
+    gap: 12px;
+  }
+
+  .provider {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .provider-mark {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0 12px;
+  }
+
+  .provider-icon {
+    grid-row: span 2;
+    max-width: 96px;
+    height: 22px;
+  }
+
+  .provider-mark h3 {
+    margin: 0;
+  }
+
+  /* Credencial en dos lineas: nombre arriba; emisor y fecha debajo. */
+  .cred-table thead {
+    display: none;
+  }
+
+  .cred-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 12px;
+    padding: 10px 0;
+    border-bottom: var(--hair);
+  }
+
+  .cred-table tbody th,
+  .cred-table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .cred-name {
+    grid-column: 1 / -1;
+  }
+
+  .cred-org {
+    white-space: normal;
+  }
+
+  /* Tecnologia y evidencia, una debajo de otra. */
+  .spec-table thead {
+    display: none;
+  }
+
+  .spec-table tr {
+    display: grid;
+    gap: 4px;
+    padding: 10px 0;
+    border-bottom: var(--hair);
+  }
+
+  .spec-table tbody th,
+  .spec-table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .spec-table td.evidence:not(:empty) {
+    padding-left: 38px;
+  }
+
+  .contact-row {
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+  }
+
+  .contact-label {
+    display: none;
+  }
+
+  .contact-primary .btn {
+    flex: 1 1 100%;
+  }
+
+  /* Anterior solo con su flecha; el indice solo con su icono; el titulo que
+     queda a la vista es el de la hoja siguiente, que es hacia donde se lee. */
+  .panel-nav {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .nav-btn {
+    gap: 10px;
+    margin: 0;
+    padding: 6px 0;
+  }
+
+  .nav-prev .nav-text {
+    display: none;
+  }
+
+  .nav-title {
+    font-size: 0.98rem;
+  }
+
+  .nav-index-label {
+    display: none;
+  }
+
+  .nav-arrow {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .journal {
+    top: auto;
+    left: 0;
+    width: 100%;
+    max-height: 88dvh;
+    border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+    transform: translateY(24px);
+  }
+
+  .journal-foot {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Muy estrecho: en la barra de abajo solo cabe la flecha y el titulo de destino. */
+@media (max-width: 400px) {
+  .nav-label {
+    display: none;
+  }
+}
+
+/* --- movimiento reducido ----------------------------------------------------- */
+
+/* Sin desplazamientos ni escalados: solo fundidos cortos, que siguen explicando
+   que algo aparece o desaparece. */
+@media (prefers-reduced-motion: reduce) {
+  .dialogue,
+  .dialogue[data-state='open'] {
+    transform: translate(-50%, 0);
+  }
+
+  .panel-layer,
+  .journal,
+  .intro-card {
+    transform: none !important;
+  }
+
+  .dialogue,
+  .panel-layer,
+  .journal,
+  .scrim,
+  .intro-card,
+  .loading-bar span {
+    transition-duration: 120ms !important;
+  }
+
+  .panel :is(.panel-titles, .sheet-grid, .ref-num) {
+    animation: none !important;
+  }
+
+  .btn:active,
+  .icon-btn:active,
+  .nav-btn:active,
+  .journal-entry:active,
+  .contact-row:active {
+    transform: none;
+  }
+
+  .nav-arrow,
+  .icon-trail {
+    transition: none;
+  }
+}

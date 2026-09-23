@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.vite/
+*.local
+.DS_Store
+
+# Sprites del pack Cute Fantasy RPG (Kenmi). Su licencia prohibe redistribuirlos,
+# asi que NO se suben al repositorio: solo van dentro de la web publicada.
+mapa/img/
+public/assets/
+public/mapa/img/
