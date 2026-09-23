@@ -15,6 +15,10 @@ const game = new Phaser.Game({
   backgroundColor: '#1d2b1a',
   pixelArt: true,
   roundPixels: true,
+  // En el movil el mapa es mas ancho que la pantalla y se arrastra con el dedo:
+  // Phaser no debe quedarse los gestos tactiles, o el navegador no puede
+  // desplazarlo. Los toques en los iconos siguen funcionando igual.
+  input: { touch: { capture: false } },
   scale: {
     // El juego se dibuja SIEMPRE al tamano real del mundo (832x576) y es el
     // CSS quien agranda el canvas entero para llenar el marco. Es la diferencia

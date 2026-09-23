@@ -49,9 +49,9 @@ export const SHEETS: SheetSpec[] = [
   { key: 'bee', path: `${A}/animals/Bee/Bee_Flying_Animation.png`, frameWidth: 16, frameHeight: 16 },
 
   // --- iconos del pack (16x16), para los marcadores -----------------------
-  { key: 'iconTools', path: `${A}/icons/Outline/Tool_Icons_Outline.png`, frameWidth: 16, frameHeight: 16 },
-  { key: 'iconFood', path: `${A}/icons/Outline/Food_Icons_Outline.png`, frameWidth: 16, frameHeight: 16 },
-  { key: 'iconRes', path: `${A}/icons/Outline/Resources_Icons_Outline.png`, frameWidth: 16, frameHeight: 16 },
+  { key: 'iconTools', path: `${A}/icons/No Outline/Tool_Icons_NO_Outline.png`, frameWidth: 16, frameHeight: 16 },
+  { key: 'iconFood', path: `${A}/icons/No Outline/Food_Icons_NO_Outline.png`, frameWidth: 16, frameHeight: 16 },
+  { key: 'iconRes', path: `${A}/icons/No Outline/Resources_Icons_NO_Outline.png`, frameWidth: 16, frameHeight: 16 },
 
   // --- personajes (64x64, 6 frames por fila) ------------------------------
   { key: 'npc_katy', path: `${A}/npcs/Bartender_Katy.png`, frameWidth: 64, frameHeight: 64 },

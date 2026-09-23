@@ -218,6 +218,8 @@ a {
 #game canvas {
   image-rendering: pixelated;
   display: block;
+  /* Deja al navegador arrastrar el mapa en el movil (Phaser pone "none"). */
+  touch-action: pan-x pan-y !important;
 }
 
 #ui-root {

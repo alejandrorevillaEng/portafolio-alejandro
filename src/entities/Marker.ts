@@ -14,9 +14,9 @@ const FONT = "'Segoe UI', system-ui, sans-serif";
 const OFFSET_Y = -40;
 /**
  * Tamano del icono flotante: los dibujos del pack miden 16 px y se multiplican
- * por esto. 1 se pierde entre los detalles del mapa; 2 tapa demasiado.
+ * por esto. A 1 (su tamano real) y sin el borde claro del pack se ven limpios.
  */
-const ICON_SCALE = 1.5;
+const ICON_SCALE = 1;
 const ICON_SIZE = 16 * ICON_SCALE;
 /** El icono flotante va un poco mas arriba cuanto mas grande es, para no tapar la cabeza. */
 const FLOAT_OFFSET_Y = OFFSET_Y - (ICON_SIZE - 16) / 2 - 2;
