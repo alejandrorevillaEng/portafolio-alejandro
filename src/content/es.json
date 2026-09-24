@@ -89,11 +89,11 @@
       "dialogue": [
         "¡Pasa al mercado! Pocos puestos todavía, pero todo lo que ves es real.",
         "Aquí solo se vende lo que está construido o en construcción.",
-        "Echa un vistazo al género."
+        "Echa un vistazo a los puestos."
       ],
       "panel": "proyectos",
       "chatter": [
-        "¡Género fresco!",
+        "Aquí cada puesto tiene su repositorio.",
         "Todo lo de este mercado se puede tocar.",
         "El puesto del medio da que hablar."
       ]
@@ -342,8 +342,7 @@
             },
             {
               "name": "Consultas y subconsultas",
-              "icon": "ph-funnel",
-              "evidence": "Proyecto oracle-database-lab"
+              "icon": "ph-funnel"
             },
             {
               "name": "Disparadores",
@@ -521,28 +520,6 @@
           ],
           "text": "Este mismo portfolio: una aldea en pixel art con el mapa diseñado en Tiled, vecinos con rutas y animaciones, y el contenido en dos idiomas. Todo el texto vive en JSON, así que ampliarlo no obliga a tocar el código.",
           "link": "https://github.com/alejandrorevillaEng",
-          "linkText": "Ver en GitHub",
-          "image": ""
-        },
-        {
-          "name": "oracle-database-lab",
-          "status": "Laboratorio",
-          "stack": [
-            {
-              "name": "Oracle",
-              "icon": "ph-database"
-            },
-            {
-              "name": "SQL",
-              "icon": "ph-table"
-            },
-            {
-              "name": "PL/SQL",
-              "icon": "ph-brackets-curly"
-            }
-          ],
-          "text": "Mi cuaderno de prácticas de SQL y modelado, con los ejercicios de la universidad. No es un producto: está a la vista porque enseña cómo trabajo.",
-          "link": "https://github.com/alejandrorevillaEng/oracle-database-lab",
           "linkText": "Ver en GitHub",
           "image": ""
         }

@@ -89,11 +89,11 @@
       "dialogue": [
         "Step into the market! Only a few stalls so far, but everything you see is real.",
         "Only things that are built, or being built, get sold here.",
-        "Have a look at the goods."
+        "Have a look at the stalls."
       ],
       "panel": "proyectos",
       "chatter": [
-        "Fresh stock!",
+        "Every stall here has its own repo.",
         "Everything at this market is the real thing.",
         "That middle stall gets people talking."
       ]
@@ -342,8 +342,7 @@
             },
             {
               "name": "Queries and subqueries",
-              "icon": "ph-funnel",
-              "evidence": "oracle-database-lab project"
+              "icon": "ph-funnel"
             },
             {
               "name": "Triggers",
@@ -521,28 +520,6 @@
           ],
           "text": "This very portfolio: a pixel-art village with a map designed in Tiled, villagers with their own routes and animations, and content in two languages. All the text lives in JSON, so extending it doesn't mean touching the code.",
           "link": "https://github.com/alejandrorevillaEng",
-          "linkText": "View on GitHub",
-          "image": ""
-        },
-        {
-          "name": "oracle-database-lab",
-          "status": "Lab",
-          "stack": [
-            {
-              "name": "Oracle",
-              "icon": "ph-database"
-            },
-            {
-              "name": "SQL",
-              "icon": "ph-table"
-            },
-            {
-              "name": "PL/SQL",
-              "icon": "ph-brackets-curly"
-            }
-          ],
-          "text": "My SQL and data modelling workbook, with my university exercises. It isn't a product: it's public because it shows how I work.",
-          "link": "https://github.com/alejandrorevillaEng/oracle-database-lab",
           "linkText": "View on GitHub",
           "image": ""
         }
