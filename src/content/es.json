@@ -20,7 +20,7 @@
     "introExplore": "Explorar la aldea",
     "introRead": "Leer el perfil",
     "headerName": "Alejandro Revilla Blanco",
-    "headerRole": "Backend · Bases de datos · IA aplicada",
+    "headerRole": "IA aplicada · Datos · Backend",
     "panHint": "Desliza para ver toda la aldea",
     "index": "Índice",
     "technology": "Tecnología",
@@ -42,10 +42,10 @@
   },
   "order": [
     "sobre-mi",
+    "ia",
     "proyectos",
     "backend",
     "datos",
-    "ia",
     "redes",
     "certificaciones",
     "aprendiendo",
@@ -222,10 +222,11 @@
       "summary": "Quién soy, qué se me da bien y qué busco.",
       "intro": "Soy Alejandro Revilla Blanco y estudio el último curso de Ingeniería Informática en la UCAM (Murcia).",
       "items": [
-        "Perfil **backend**, con una base fuerte en **bases de datos** y un pie en la **IA aplicada**.",
+        "Perfil orientado a **IA aplicada**, con una base fuerte en **datos** (Oracle, SQL) e **infraestructura** (redes, Linux).",
         "Lo que mejor se me da: modelar bien los datos antes de escribir la primera línea de código.",
         "Llego con una base poco habitual en un perfil junior: cinco certificaciones de Oracle y la ruta CCNA de Cisco completa.",
-        "Busco **prácticas o un primer empleo junior** como Backend Developer o AI Application Developer."
+        "Asignaturas cercanas a la IA: Sistemas Inteligentes, Ingeniería del Conocimiento, Bases de Datos y Programación Paralela.",
+        "Busco **prácticas a partir de enero de 2027** en IA, datos o MLOps, en Murcia o en remoto."
       ],
       "note": "**Horario:** clases de lunes a viernes por la tarde. El resto del tiempo lo reparto entre CS50x, inglés y proyectos propios.",
       "photo": "perfil/foto.png",
@@ -361,23 +362,30 @@
       "type": "skills",
       "place": "El invernadero",
       "title": "IA aplicada",
-      "summary": "Modelos de lenguaje, agentes de IA y machine learning.",
-      "intro": "Lo más nuevo de la aldea: conectar modelos de lenguaje a aplicaciones que resuelven algo concreto.",
+      "summary": "Agentes, LLMs y, a continuación, machine learning.",
+      "intro": "Es hacia donde voy: aplicaciones con IA que resuelven algo concreto, apoyadas en datos bien modelados y en una infraestructura que conozco.",
       "groups": [
         {
           "name": "En lo que estoy trabajando",
           "items": [
             {
+              "name": "Agentes de IA",
+              "icon": "ph-robot",
+              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+            },
+            {
+              "name": "Subagentes, skills y MCP",
+              "icon": "ph-tree-structure",
+              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+            },
+            {
+              "name": "Desarrollo guiado por especificaciones",
+              "icon": "ph-list-numbers",
+              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+            },
+            {
               "name": "Integración de LLMs",
               "icon": "ph-chat-circle-dots"
-            },
-            {
-              "name": "Aplicaciones generativas",
-              "icon": "ph-sparkle"
-            },
-            {
-              "name": "APIs de modelos",
-              "icon": "ph-plugs-connected"
             },
             {
               "name": "Microsoft Learn",
@@ -387,21 +395,22 @@
           ]
         },
         {
-          "name": "Lo que más me interesa",
+          "name": "Próximos pasos",
           "items": [
             {
               "name": "Machine learning",
-              "icon": "ph-brain"
+              "icon": "ph-brain",
+              "evidence": "Plan 2027: curso de Andrew Ng y scikit-learn"
             },
             {
-              "name": "Agentes de IA",
-              "icon": "ph-robot",
-              "evidence": "Curso de MoureDev, 28-30 sep. 2026"
+              "name": "RAG y bases de datos vectoriales",
+              "icon": "ph-database",
+              "evidence": "Plan 2027"
             }
           ]
         }
       ],
-      "note": "Es la rama que más estoy cultivando ahora, siempre junto al backend. El machine learning es lo que más me tira."
+      "note": "Lo que más me tira es el machine learning. El plan es llegar a él a base de proyectos reales, publicados en GitHub."
     },
     "redes": {
       "type": "skills",
@@ -658,12 +667,12 @@
       "summary": "Lo que estoy estudiando este curso.",
       "intro": "Sembrado y en marcha. Todavía no se cosecha, pero ya asoma.",
       "items": [
-        "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta módulos, excepciones y programación orientada a objetos.",
-        "**Agentes de IA con MoureDev (28-30 de septiembre):** cómo construir agentes y aplicar la IA con criterio en proyectos reales.",
         "**CS50x (Harvard):** algoritmos y estructuras de datos, para reforzar la base.",
-        "**Inglés B2:** preparación con EF SET y Cambridge Test & Train.",
-        "**Spring Boot y microservicios:** profundizando en la parte que más me interesa.",
-        "**Microsoft Learn:** desarrollo de aplicaciones generativas."
+        "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta la programación orientada a objetos, con el examen **PCAP** como meta.",
+        "**Agentes de IA con BIG School (Brais Moure), del 29 de septiembre al 1 de octubre:** agentes, subagentes, desarrollo guiado por especificaciones, skills y MCP.",
+        "**Inglés, de B2 a C1:** preparación con EF SET y Cambridge Test & Train.",
+        "**Microsoft Learn:** desarrollo de aplicaciones generativas.",
+        "**Lo siguiente, NumPy y Pandas:** la base para trabajar con datos en Python."
       ]
     },
     "contacto": {
@@ -692,7 +701,7 @@
           "icon": "linkedin"
         }
       ],
-      "note": "Busco prácticas o un primer empleo junior como Backend Developer o AI Application Developer."
+      "note": "Busco prácticas a partir de enero de 2027 en IA, datos o MLOps (Murcia o remoto)."
     }
   }
 }

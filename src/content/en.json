@@ -20,7 +20,7 @@
     "introExplore": "Explore the village",
     "introRead": "Read the profile",
     "headerName": "Alejandro Revilla Blanco",
-    "headerRole": "Backend · Databases · Applied AI",
+    "headerRole": "Applied AI · Data · Backend",
     "panHint": "Swipe to see the whole village",
     "index": "Index",
     "technology": "Technology",
@@ -42,10 +42,10 @@
   },
   "order": [
     "sobre-mi",
+    "ia",
     "proyectos",
     "backend",
     "datos",
-    "ia",
     "redes",
     "certificaciones",
     "aprendiendo",
@@ -222,10 +222,11 @@
       "summary": "Who I am, what I'm good at and what I'm looking for.",
       "intro": "I'm Alejandro Revilla Blanco, a final-year Computer Engineering student at UCAM (Murcia, Spain).",
       "items": [
-        "A **backend** profile, with a strong **database** foundation and one foot in **applied AI**.",
+        "A profile focused on **applied AI**, with a strong foundation in **data** (Oracle, SQL) and **infrastructure** (networking, Linux).",
         "What I do best: getting the data model right before writing the first line of code.",
         "An unusual starting point for a junior: five Oracle certifications and the complete Cisco CCNA track.",
-        "I'm looking for an **internship or a first junior role** as a Backend Developer or AI Application Developer."
+        "AI-related modules: Intelligent Systems, Knowledge Engineering, Databases and Parallel Programming.",
+        "I'm looking for an **internship from January 2027** in AI, data or MLOps, in Murcia or remote."
       ],
       "note": "**Schedule:** classes on weekday afternoons. The rest of my time goes on CS50x, English and my own projects.",
       "photo": "perfil/foto.png",
@@ -361,23 +362,30 @@
       "type": "skills",
       "place": "The greenhouse",
       "title": "Applied AI",
-      "summary": "Language models, AI agents and machine learning.",
-      "intro": "The newest part of the village: connecting language models to applications that solve something specific.",
+      "summary": "Agents, LLMs and, next, machine learning.",
+      "intro": "It's where I'm heading: AI applications that solve something specific, built on well-modelled data and infrastructure I know.",
       "groups": [
         {
           "name": "What I'm working on",
           "items": [
             {
+              "name": "AI agents",
+              "icon": "ph-robot",
+              "evidence": "BIG School course (Brais Moure), 29 Sep–1 Oct 2026"
+            },
+            {
+              "name": "Subagents, skills and MCP",
+              "icon": "ph-tree-structure",
+              "evidence": "BIG School course (Brais Moure), 29 Sep–1 Oct 2026"
+            },
+            {
+              "name": "Spec-driven development",
+              "icon": "ph-list-numbers",
+              "evidence": "BIG School course (Brais Moure), 29 Sep–1 Oct 2026"
+            },
+            {
               "name": "LLM integration",
               "icon": "ph-chat-circle-dots"
-            },
-            {
-              "name": "Generative applications",
-              "icon": "ph-sparkle"
-            },
-            {
-              "name": "Model APIs",
-              "icon": "ph-plugs-connected"
             },
             {
               "name": "Microsoft Learn",
@@ -387,21 +395,22 @@
           ]
         },
         {
-          "name": "What interests me most",
+          "name": "Next steps",
           "items": [
             {
               "name": "Machine learning",
-              "icon": "ph-brain"
+              "icon": "ph-brain",
+              "evidence": "2027 plan: Andrew Ng's course and scikit-learn"
             },
             {
-              "name": "AI agents",
-              "icon": "ph-robot",
-              "evidence": "MoureDev course, 28-30 Sep 2026"
+              "name": "RAG and vector databases",
+              "icon": "ph-database",
+              "evidence": "2027 plan"
             }
           ]
         }
       ],
-      "note": "It's the branch I'm growing the most right now, always alongside backend work. Machine learning is what pulls me most."
+      "note": "Machine learning is what pulls me most. The plan is to get there through real projects, published on GitHub."
     },
     "redes": {
       "type": "skills",
@@ -658,12 +667,12 @@
       "summary": "What I'm studying this year.",
       "intro": "Sown and under way. Nothing to harvest yet, but it's coming up.",
       "items": [
-        "**Python Essentials 1 and 2 (Cisco Networking Academy):** Python from the basics to modules, exceptions and object-oriented programming.",
-        "**AI agents with MoureDev (28-30 September):** how to build agents and use AI sensibly in real projects.",
         "**CS50x (Harvard):** algorithms and data structures, to strengthen the fundamentals.",
-        "**English B2:** preparing with EF SET and Cambridge Test & Train.",
-        "**Spring Boot and microservices:** going deeper into the part that interests me most.",
-        "**Microsoft Learn:** building generative AI applications."
+        "**Python Essentials 1 and 2 (Cisco Networking Academy):** Python from the basics to object-oriented programming, aiming at the **PCAP** exam.",
+        "**AI agents with BIG School (Brais Moure), 29 September to 1 October:** agents, subagents, spec-driven development, skills and MCP.",
+        "**English, from B2 to C1:** preparing with EF SET and Cambridge Test & Train.",
+        "**Microsoft Learn:** building generative AI applications.",
+        "**Next up, NumPy and Pandas:** the basis for working with data in Python."
       ]
     },
     "contacto": {
@@ -692,7 +701,7 @@
           "icon": "linkedin"
         }
       ],
-      "note": "I'm looking for an internship or a first junior role as a Backend Developer or AI Application Developer."
+      "note": "I'm looking for an internship from January 2027 in AI, data or MLOps (Murcia or remote)."
     }
   }
 }
