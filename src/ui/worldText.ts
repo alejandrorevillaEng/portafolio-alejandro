@@ -1,12 +1,5 @@
-/**
- * Texto sobre el mapa: los bocadillos de charla de los vecinos y la etiqueta
- * del marcador al pasar el raton.
- *
- * El juego manda por el bus que decir y donde, en pixeles del mundo; aqui se
- * pinta en DOM, encima del canvas y dentro del marco (#ui-root tiene la misma
- * proporcion que el mapa, asi que un punto del mundo es un porcentaje del marco).
- * Asi la letra es la de verdad y se ve nitida a cualquier tamano.
- */
+// Bocadillos y etiqueta de marcador en DOM (en el canvas escalado salian borrosos).
+// #ui-root tiene la proporcion del mapa, asi que se colocan en % del mundo.
 
 import { on } from '@/systems/bus';
 import { onLangChange } from '@/content';
@@ -20,7 +13,7 @@ function place(node: HTMLElement, x: number, y: number): void {
 
 export function mountWorldText(root: HTMLElement): void {
   const layer = el('div', 'world-text');
-  layer.setAttribute('aria-hidden', 'true'); // charla de ambiente: no aporta a un lector de pantalla
+  layer.setAttribute('aria-hidden', 'true');
   root.append(layer);
 
   const bubbles = new Map<string, HTMLElement>();
@@ -47,7 +40,6 @@ export function mountWorldText(root: HTMLElement): void {
   });
   on('bubble:hide', ({ key }) => remove(key));
 
-  // Si cambia el idioma, lo que ya estaba dicho desaparece; lo siguiente sale en el nuevo.
   onLangChange(() => [...bubbles.keys()].forEach(remove));
 
   const label = el('p', 'world-label');
@@ -61,7 +53,6 @@ export function mountWorldText(root: HTMLElement): void {
     label.textContent = data.text;
     label.hidden = false;
     place(label, data.x, data.y);
-    // Que no se salga por los lados del marco.
     const half = label.offsetWidth / 2;
     const px = (data.x / WORLD_W) * layer.clientWidth;
     const clamped = Math.min(Math.max(px, half + 4), layer.clientWidth - half - 4);

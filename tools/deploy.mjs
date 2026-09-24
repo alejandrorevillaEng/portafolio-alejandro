@@ -1,13 +1,4 @@
-/**
- * Publica dist/ en la rama gh-pages (la que sirve GitHub Pages).
- *
- *   npm run deploy
- *
- * Hace un repositorio git de usar y tirar dentro de dist/ y lo sube a la fuerza
- * a gh-pages del mismo remoto. Se anade todo con -f a proposito: el .gitignore
- * del proyecto deja fuera los sprites del pack (su licencia no permite
- * redistribuirlos en el codigo), pero la web publicada SI tiene que llevarlos.
- */
+// Sube dist/ a la rama gh-pages. Con -f porque .gitignore excluye los sprites del pack.
 import { execSync } from 'node:child_process';
 import { existsSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -21,8 +12,6 @@ if (!existsSync(join(dist, 'index.html'))) throw new Error('No hay dist/: ejecut
 const remote = execSync('git remote get-url origin', { cwd: root }).toString().trim();
 
 rmSync(join(dist, '.git'), { recursive: true, force: true });
-// GitHub Pages pasa por Jekyll salvo que exista este archivo; sin el, ignoraria
-// carpetas que empiezan por "_".
 writeFileSync(join(dist, '.nojekyll'), '');
 
 run('git init -q -b gh-pages');

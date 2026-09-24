@@ -1,32 +1,16 @@
-/**
- * LA ALDEA, leida del mapa de Tiled.
- *
- * El mapa se dibuja en Tiled (mapa/aldea.tmx) y se exporta con `npm run mapa`
- * a public/mapa/aldea.json. Aqui se traduce a lo que el juego necesita:
- *
- *   - capas de tiles: se pintan tal cual. Las que llevan la propiedad
- *     `encima = true` van por encima de vecinos y animales (tejados, copas).
- *   - capa de objetos "vecinos": un punto o una polilinea por vecino. El nombre
- *     del objeto es su id en content/*.json; el primer punto es su casa (donde
- *     tiene los pies) y el resto, su paseo.
- *   - "carteles": un punto por cartel que abre panel (nombre = id del cartel).
- *   - "animales": rectangulos donde pasea cada especie.
- *   - "efectos": puntos de humo (chimeneas) y de luz (se encienden de noche).
- *
- * Todas las coordenadas salen en pixeles del mundo.
- */
+// Lee public/mapa/aldea.json (exportado de Tiled).
+// Capas de objetos: vecinos (punto o polilinea, el nombre es su id), carteles,
+// animales (rectangulos) y efectos (humo, luz). Capas con encima=true van sobre los personajes.
 
 import Phaser from 'phaser';
 
 export type Facing = 'up' | 'down' | 'left' | 'right';
 
 export interface NpcSpawn {
-  /** Coincide con la clave del NPC en content/*.json. */
   id: string;
   sprite: string;
-  /** Punto de los pies donde vive y hace su oficio. */
+  /** pies */
   home: [number, number];
-  /** Paseo (pies), si lo tiene. */
   route?: Array<[number, number]>;
   facing?: Facing;
 }
@@ -62,7 +46,6 @@ export interface Aldea {
 export const MAP_KEY = 'aldea';
 export const MAP_URL = 'mapa/aldea.json';
 
-/** Clave de textura de un tileset del mapa. */
 export const tilesetKey = (name: string): string => `tileset:${name}`;
 
 type Props = Record<string, string | number | boolean>;
@@ -78,7 +61,6 @@ function objects(map: Phaser.Tilemaps.Tilemap, layer: string): Phaser.Types.Tile
   return map.getObjectLayer(layer)?.objects ?? [];
 }
 
-/** Lee los objetos del mapa: vecinos, carteles, animales y efectos. */
 export function readAldea(map: Phaser.Tilemaps.Tilemap): Aldea {
   const npcs: NpcSpawn[] = objects(map, 'vecinos').map((o) => {
     const p = props(o);
@@ -113,7 +95,6 @@ export function readAldea(map: Phaser.Tilemaps.Tilemap): Aldea {
   return { npcs, signs, animals, smoke: puntos('humo'), lights: puntos('luz') };
 }
 
-/** Capa de tiles que va por encima de los personajes. */
 export function isOverhead(layer: Phaser.Tilemaps.LayerData): boolean {
   const list = (layer.properties ?? []) as Array<{ name: string; value: unknown }>;
   return list.some((p) => p.name === 'encima' && p.value === true);

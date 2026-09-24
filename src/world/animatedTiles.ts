@@ -1,21 +1,12 @@
-/**
- * Tiles animados de Tiled (agua, fuente, antorchas, aspas del molino...).
- *
- * Tiled guarda la animacion en el tileset y la reproduce en el editor, pero
- * Phaser no la reproduce por su cuenta: pinta siempre el primer dibujo. Aqui
- * se buscan los tiles animados de cada capa y se les cambia el indice segun el
- * reloj de la escena.
- *
- * Todos van con el mismo reloj a proposito: las piezas del borde del agua y
- * las del centro tienen que cambiar de dibujo a la vez o se ven las costuras.
- */
+// Phaser no reproduce las animaciones de tiles de Tiled; se hace aqui.
+// Un solo reloj para todos, si no el borde del agua se desincroniza del centro.
 
 import Phaser from 'phaser';
 
 interface Anim {
   /** gid de cada dibujo */
   frames: number[];
-  /** instante (ms dentro del ciclo) en que empieza cada dibujo */
+  /** ms dentro del ciclo */
   starts: number[];
   total: number;
   tiles: Phaser.Tilemaps.Tile[];

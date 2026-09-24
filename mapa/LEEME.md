@@ -118,9 +118,3 @@ quedarían sin imagen.
 52×36 tiles (832×576 px). Si lo cambias (*Mapa → Redimensionar*), cambia también
 `MAP_W`/`MAP_H` en `src/config.ts` y el `aspect-ratio` de `#stage-frame` en
 `index.html` y `src/ui/styles.css`: la cámara es fija y encaja el mapa entero.
-
-## El borrador inicial
-
-`aldea.tmx` salió de `tools/generar-mapa.mjs`, un generador de un solo uso para no
-empezar con el lienzo en blanco. A partir de ahí manda Tiled: **no lo relances** (se
-niega a sobrescribir el mapa salvo con `--force`, y se perdería todo lo editado).

@@ -1,29 +1,13 @@
-/**
- * Catalogo de tilesets del mapa: que hoja del pack entra en Tiled, con que
- * nombre y si tiene animacion o autotile.
- *
- * Todas las hojas se cortan en celdas de 16x16, tambien los edificios y los
- * arboles: en Tiled se seleccionan de golpe (arrastrando sobre el tileset) y
- * se estampan como un bloque.
- *
- * Para meter una hoja nueva: anade una linea aqui y lanza `npm run tilesets`.
- */
+// Tilesets del mapa: hoja del pack, nombre y si tiene animacion o autotile.
+// Todo se corta en celdas de 16x16.
 
 const T = 'Tiles';
 const B = 'Buildings/Buildings';
 const O = 'Outdoor decoration';
 const OA = 'Outdoor decoration/Outdoor_Decor_Animations';
 
-/**
- * anim: la hoja es una tira de `frames` dibujos de `ancho` px puestos en
- * horizontal. Cada celda del primer dibujo se anima pasando por las celdas
- * equivalentes del resto. `ms` es la duracion de cada dibujo.
- *
- * wang: conjuntos de autotile (pincel de terreno de Tiled). Todos siguen el
- * formato del pack: un bloque de 3x3 con el material dentro y un 2x2 con las
- * esquinas interiores justo debajo. `x`/`y` es la celda de arriba a la
- * izquierda del 3x3.
- */
+// anim: tira horizontal de `frames` dibujos de `ancho` px, `ms` por dibujo.
+// wang: autotile del pack (bloque 3x3 + 2x2 debajo); x/y es la esquina del 3x3.
 export const TILESETS = [
   // --- suelo -----------------------------------------------------------------
   { name: 'hierba', src: `${T}/Grass/Grass_1_Middle.png` },
@@ -119,8 +103,7 @@ export const TILESETS = [
   { name: 'hierba-flor', src: `${OA}/Grass_Animations/Flower_Grass_1_Anim.png`, anim: { frames: 8, ancho: 16, ms: 180 } },
   { name: 'hierba-flor-2', src: `${OA}/Grass_Animations/Flower_Grass_5_Anim.png`, anim: { frames: 8, ancho: 16, ms: 180 } },
   { name: 'hierba-flor-3', src: `${OA}/Grass_Animations/Flower_Grass_9_Anim.png`, anim: { frames: 8, ancho: 16, ms: 180 } },
-  // Cada Waterfall_N es un ESTILO de color; dentro, 6 dibujos de 3 tiles de ancho
-  // (orilla izquierda, agua, orilla derecha). Mezclar archivos hacia parpadear el agua.
+  // cada Waterfall_N es un color distinto, no un frame
   { name: 'cascada', src: `${T}/Waterfall/Waterfall_1.png`, anim: { frames: 6, ancho: 48, ms: 110 } },
   { name: 'puente-2', src: `${T}/Bridge/Bridge_Wood_1.png` },
   { name: 'maceteros', src: 'Buildings/House_Decor/Planters.png' },
@@ -128,11 +111,7 @@ export const TILESETS = [
   { name: 'setas', src: `${OA}/Muschroom_Animations/muschroom_1_Anim.png`, anim: { frames: 6, ancho: 16, ms: 200 } },
 ];
 
-/**
- * Esquinas de cada celda del bloque 3x3 + 2x2, como [arriba-izq, arriba-der,
- * abajo-der, abajo-izq]; 1 = material, 0 = hierba. La clave es "col,fila"
- * relativa a la esquina del bloque.
- */
+// [arriba-izq, arriba-der, abajo-der, abajo-izq]; 1 = material, 0 = hierba
 export const ESQUINAS = {
   '0,0': [0, 0, 1, 0],
   '1,0': [0, 0, 1, 1],

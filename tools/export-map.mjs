@@ -1,19 +1,4 @@
-/**
- * Exporta el mapa de Tiled a la web.
- *
- *   mapa/aldea.tmx  ->  public/mapa/aldea.json  (+ public/mapa/img/*.png)
- *
- * Usa el propio Tiled en modo linea de comandos (con los tilesets incrustados,
- * que es como los necesita Phaser) y despues:
- *   - reescribe la ruta de cada imagen para que la web la encuentre,
- *   - copia solo los PNG que el mapa usa de verdad,
- *   - comprueba que los vecinos y carteles del mapa existen en content/*.json.
- *
- *   npm run mapa
- *
- * Tiled se busca en C:\Program Files\Tiled\tiled.exe; si esta en otro sitio,
- * pon su ruta en la variable de entorno TILED.
- */
+// mapa/aldea.tmx -> public/mapa/aldea.json con el tiled.exe (o la ruta en TILED).
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -41,9 +26,7 @@ if (!tiled) {
 
 mkdirSync(join(outDir, 'img'), { recursive: true });
 
-// Tiled escribe por medio de un archivo temporal junto al destino. Dentro de
-// public/ eso tumba el vigilante de Vite en Windows (EBUSY) si el servidor de
-// desarrollo esta abierto, asi que exporta fuera y aqui se copia el resultado.
+// Se exporta fuera de public/: el temporal de Tiled tumbaba el watcher de Vite (EBUSY).
 const tmp = mkdtempSync(join(tmpdir(), 'aldea-'));
 const exported = join(tmp, 'aldea.json');
 
@@ -61,7 +44,6 @@ execFileSync(tiled, [
 const map = JSON.parse(readFileSync(exported, 'utf8'));
 rmSync(tmp, { recursive: true, force: true });
 
-// Solo los tilesets que el mapa pinta de verdad: el resto ni se descarga.
 const usados = new Set();
 for (const layer of map.layers) if (layer.type === 'tilelayer') for (const g of layer.data) if (g) usados.add(g & 0x1fffffff);
 const enUso = (ts) => [...usados].some((g) => g >= ts.firstgid && g < ts.firstgid + ts.tilecount);
@@ -75,11 +57,9 @@ for (const ts of map.tilesets) {
 }
 const copiados = map.tilesets.length;
 
-// Fuera las imagenes de tilesets que el mapa ya no usa.
 const vigentes = new Set(map.tilesets.map((ts) => basename(ts.image)));
 for (const file of readdirSync(join(outDir, 'img'))) if (!vigentes.has(file)) rmSync(join(outDir, 'img', file));
 
-// Los vecinos y carteles tienen que existir en el contenido.
 const content = JSON.parse(readFileSync(join(project, 'src', 'content', 'es.json'), 'utf8'));
 const avisos = [];
 for (const layer of map.layers) {

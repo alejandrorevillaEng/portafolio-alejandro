@@ -1,14 +1,4 @@
-/**
- * index.html lleva una copia del perfil para buscadores y para quien llega sin
- * JavaScript (#seo-content). Es la unica excepcion a "todo el texto en los
- * JSON", porque tiene que estar en el HTML antes de que cargue nada.
- *
- * Este script comprueba que esa copia no se ha quedado atras respecto a
- * src/content/es.json: el nombre, los enlaces de contacto y las
- * certificaciones. Si algo no cuadra, el build falla.
- *
- *   npm run check:seo
- */
+// Comprueba que el #seo-content de index.html sigue al dia con es.json.
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,8 +20,6 @@ for (const link of contact?.links ?? []) {
   if (!seo.includes(link.href)) problems.push(`Falta el enlace de contacto ${link.href} en #seo-content.`);
 }
 
-// Las certificaciones de Oracle y Cisco van con su nombre casi literal; basta
-// con que cada proveedor y cada ruta CCNA aparezcan.
 const certs = Object.values(es.panels).find((p) => p.type === 'certificaciones');
 for (const shelf of certs?.shelves ?? []) {
   for (const cert of shelf.items) {

@@ -1,16 +1,5 @@
-/**
- * Interfaz en DOM: cabecera, botones sobre el mapa, bienvenida, dialogos,
- * paneles y el perfil completo (el indice).
- *
- * Dos sitios distintos:
- *   - #ui-root, dentro del marco del mapa: botones, ayuda.
- *   - #overlay-root, fijo a la ventana: todo lo que se lee (dialogo, paneles,
- *     indice, bienvenida). Fuera del marco para que en un movil no quede
- *     encerrado en un mapa de 250 px de alto.
- *
- * Se construye entera desde el contenido JSON: una seccion nueva no toca este
- * archivo salvo que necesite una plantilla de panel que no exista.
- */
+// Interfaz en DOM. #ui-root va dentro del marco del mapa (botones); #overlay-root
+// es fijo a la ventana (dialogo, secciones, indice, bienvenida).
 
 import { emit, on } from '@/systems/bus';
 import {
@@ -55,11 +44,10 @@ export class UI {
   private typeTimer = 0;
   private currentSpeakerId = '';
   private openSectionId = '';
-  /** La ultima seccion abierta: el indice la senala como "aqui lo dejaste". */
   private lastSectionId = '';
   private lastFocus: HTMLElement | null = null;
   private userPanned = false;
-  /** Donde dejo el scroll el centrado automatico: llegar ahi no es un gesto de la persona. */
+  /** para no confundir el centrado automatico con un gesto */
   private autoScrollLeft = -1;
   private readonly visited = new Set<string>();
 
@@ -74,7 +62,6 @@ export class UI {
     this.dialogue.setAttribute('aria-live', 'polite');
     this.dialogueWho = el('div', 'dialogue-who');
     this.dialogueText = el('p', 'dialogue-text');
-    // "Ver seccion" es lo que busca quien viene a leer: va como accion principal.
     this.dialogueSkip = button('btn btn-primary', '', () => this.skipToSection());
     this.dialogueNext = button('btn', '', () => this.advance());
     const actions = el('div', 'dialogue-actions');
@@ -111,11 +98,8 @@ export class UI {
     onLangChange(() => this.refreshStaticText());
   }
 
-  // -------------------------------------------------------------------------
-  // Montaje
-  // -------------------------------------------------------------------------
+  // --- Montaje ---
 
-  /** Botones de idioma y de perfil completo. Se usan en el mapa y en la cabecera. */
   private buildActions(): HTMLElement {
     const box = el('div', 'actions');
 
@@ -139,7 +123,6 @@ export class UI {
     return hud;
   }
 
-  /** Cabecera de movil en vertical: quien es, a que se dedica y el acceso al perfil. */
   private buildHeader(): void {
     const who = el('div', 'stage-who');
     who.append(el('p', 'stage-name'), el('p', 'stage-role'));
@@ -161,13 +144,10 @@ export class UI {
       window.setTimeout(() => this.maybeShowIntro(), 650);
     });
 
-    // En movil el mapa se arrastra: se centra al cargar y al girar la pantalla,
-    // salvo que la persona ya lo haya movido.
     this.scroller?.addEventListener(
       'scroll',
       () => {
-        // El evento del centrado puede llegar tarde (la carga ocupa el hilo),
-        // asi que se reconoce por la posicion, no por el tiempo.
+        // el scroll del centrado llega tarde, por eso se compara la posicion
         if (Math.abs((this.scroller?.scrollLeft ?? 0) - this.autoScrollLeft) < 2) return;
         this.userPanned = true;
         this.panHint?.classList.remove('visible');
@@ -188,7 +168,6 @@ export class UI {
   }
 
   private onKey(e: KeyboardEvent): void {
-    // El modal abierto de mas arriba es el que manda.
     const modal = [this.introLayer, this.panelLayer, this.journalLayer].find((n) => !n.hidden);
     if (modal) trapFocus(modal, e);
 
@@ -200,7 +179,6 @@ export class UI {
       return;
     }
 
-    // Con una hoja abierta, las flechas pasan de seccion como las paginas de un catalogo.
     if (modal === this.panelLayer && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
       this.stepSection(e.key === 'ArrowRight' ? 1 : -1);
       e.preventDefault();
@@ -245,7 +223,6 @@ export class UI {
     if (!this.panelLayer.hidden && this.openSectionId) this.renderSection(this.openSectionId);
   }
 
-  /** En movil el mapa es mas ancho que la pantalla: se abre centrado en la plaza. */
   private centerMap(): void {
     const s = this.scroller;
     if (!s) return;
@@ -255,15 +232,12 @@ export class UI {
     this.panHint?.classList.toggle('visible', overflow > 4);
   }
 
-  // -------------------------------------------------------------------------
-  // Bienvenida (solo la primera vez)
-  // -------------------------------------------------------------------------
+  // --- Bienvenida (solo la primera vez) ---
 
   private maybeShowIntro(): void {
     try {
       if (localStorage.getItem(INTRO_KEY)) return;
     } catch {
-      // Sin almacenamiento se muestra siempre: mejor de mas que de menos.
     }
 
     const card = el('section', 'intro-card sheet');
@@ -288,7 +262,6 @@ export class UI {
     try {
       localStorage.setItem(INTRO_KEY, '1');
     } catch {
-      // Ver maybeShowIntro.
     }
     conceal(this.introLayer, () => {
       emit('onboarding:done', undefined);
@@ -296,9 +269,7 @@ export class UI {
     });
   }
 
-  // -------------------------------------------------------------------------
-  // Dialogo
-  // -------------------------------------------------------------------------
+  // --- Dialogo ---
 
   private openDialogue(id: string): void {
     const who = speaker(id);
@@ -330,7 +301,6 @@ export class UI {
     }, TYPE_SPEED);
   }
 
-  /** Un clic o una tecla: primero completa la linea, luego pasa a la siguiente. */
   private advance(): void {
     if (this.typing) {
       window.clearInterval(this.typeTimer);
@@ -347,7 +317,6 @@ export class UI {
     this.skipToSection();
   }
 
-  /** "Ver seccion": para quien no quiere la conversacion entera. */
   private skipToSection(): void {
     const id = this.currentSpeakerId;
     this.closeDialogue();
@@ -361,11 +330,8 @@ export class UI {
     emit('dialogue:closed', undefined);
   }
 
-  // -------------------------------------------------------------------------
-  // Paneles
-  // -------------------------------------------------------------------------
+  // --- Paneles ---
 
-  /** Abre la seccion de un vecino o cartel (por su id). `dir` es el sentido al pasar de hoja. */
   private openSection(id: string, dir: -1 | 0 | 1 = 0): void {
     const who = speaker(id);
     if (!who || !getPanel(who.panel)) return;
@@ -375,12 +341,10 @@ export class UI {
     this.renderSection(id, dir);
     this.markVisited(id);
     if (opening) reveal(this.panelLayer);
-    // El foco va al titulo: el lector de pantalla anuncia la hoja nueva y no
-    // queda un anillo de foco sobre "cerrar" despues de pasar de hoja.
+    // foco al titulo para que el lector de pantalla anuncie la seccion
     this.panelLayer.querySelector<HTMLElement>('#panel-title')?.focus({ preventScroll: true });
   }
 
-  /** Hoja anterior o siguiente en el orden de lectura. */
   private stepSection(dir: -1 | 1): void {
     const list = sections();
     const at = list.findIndex((s) => s.id === this.openSectionId);
@@ -388,10 +352,6 @@ export class UI {
     if (at >= 0 && target) this.openSection(target.id, dir);
   }
 
-  /**
-   * La hoja a pantalla completa: referencia y titulo arriba, el cuerpo con
-   * scroll propio y una barra fija abajo para pasar de seccion.
-   */
   private renderSection(id: string, dir: -1 | 0 | 1 = 0): void {
     const who = speaker(id);
     const data = who ? getPanel(who.panel) : undefined;
@@ -403,11 +363,9 @@ export class UI {
     page.setAttribute('role', 'dialog');
     page.setAttribute('aria-modal', 'true');
     page.setAttribute('aria-labelledby', 'panel-title');
-    // El CSS lo usa para que la hoja nueva entre por el lado hacia el que se lee.
     page.dataset.dir = String(dir);
 
     const head = el('header', 'panel-head');
-    // Referencia de hoja, como en una ficha tecnica: "AR·03 / 10".
     const ref = el('p', 'sheet-ref');
     const total = String(sections().length).padStart(2, '0');
     ref.append(`${t('refPrefix')}·`, el('span', 'ref-num', sectionNumber(id)), ` / ${total}`);
@@ -432,10 +390,6 @@ export class UI {
     this.panelLayer.replaceChildren(page);
   }
 
-  /**
-   * En pantallas tactiles, deslizar en horizontal pasa de hoja. El scroll
-   * vertical sigue siendo del navegador (touch-action: pan-y en el CSS).
-   */
   private bindSwipe(area: HTMLElement): void {
     let x0 = 0;
     let y0 = 0;
@@ -452,7 +406,6 @@ export class UI {
       const dy = e.clientY - y0;
       const fast = Math.abs(dx) / Math.max(1, e.timeStamp - t0) > 0.4;
       t0 = 0;
-      // Claramente horizontal, y o bien largo o bien rapido.
       if (Math.abs(dx) > Math.abs(dy) * 1.5 && (Math.abs(dx) > 70 || (fast && Math.abs(dx) > 30))) {
         this.stepSection(dx < 0 ? 1 : -1);
       }
@@ -460,7 +413,6 @@ export class UI {
     area.addEventListener('pointercancel', () => (t0 = 0));
   }
 
-  /** Anterior / indice / siguiente, en el mismo orden que el indice. */
   private renderPanelNav(id: string): HTMLElement {
     const nav = el('footer', 'panel-nav');
     const list = sections();
@@ -470,7 +422,6 @@ export class UI {
     const make = (target: (typeof list)[number] | undefined, dir: -1 | 1) => {
       if (!target) return el('span', 'nav-spacer');
       const btn = button(`nav-btn nav-${dir < 0 ? 'prev' : 'next'}`, '', () => this.openSection(target.id, dir));
-      // En movil parte del texto se oculta: el nombre accesible no depende de el.
       btn.setAttribute('aria-label', `${t(dir < 0 ? 'prev' : 'next')}: ${target.panel.title}`);
       const text = el('span', 'nav-text');
       const label = el('span', 'nav-label', `${t(dir < 0 ? 'prev' : 'next')} · `);
@@ -509,9 +460,7 @@ export class UI {
     emit('journal:visited', { id });
   }
 
-  // -------------------------------------------------------------------------
-  // Perfil completo (indice)
-  // -------------------------------------------------------------------------
+  // --- Perfil completo (indice) ---
 
   private toggleJournal(): void {
     if (isOpen(this.journalLayer)) this.closeJournal();
@@ -533,10 +482,6 @@ export class UI {
     this.lastFocus?.focus({ preventScroll: true });
   }
 
-  /**
-   * Todas las secciones, en orden de lectura, para quien no quiere recorrer el
-   * mapa: cada entrada abre su panel al momento.
-   */
   private renderJournal(): void {
     const head = el('header', 'journal-head');
     const titles = el('div');
@@ -556,9 +501,6 @@ export class UI {
       });
       const text = el('span', 'entry-text');
       text.append(el('span', 'entry-title', panel.title), el('span', 'entry-summary', panel.summary));
-      // El estado es una marca, no solo un color: leido, sin leer o donde lo dejaste.
-      // Solo se marca lo que informa: leido, o donde lo dejaste. Una marca de
-      // "sin leer" en todas las filas seria ruido.
       const state = el('span', 'entry-state');
       if (this.visited.has(id)) state.append(icon('ph-check'), el('span', undefined, t('journalVisited')));
       entry.append(el('span', 'entry-num', sectionNumber(id)), text, state);
@@ -571,7 +513,6 @@ export class UI {
       list.append(li);
     }
 
-    // Contacto a mano, sin tener que abrir su panel.
     const foot = el('footer', 'journal-foot');
     const contact = Object.values(content().panels).find((p) => p.type === 'contacto');
     if (contact?.type === 'contacto') {

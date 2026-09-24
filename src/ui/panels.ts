@@ -1,12 +1,4 @@
-/**
- * El cuerpo de cada hoja de seccion, segun su tipo. Todo el texto sale del
- * JSON; aqui solo se decide la estructura.
- *
- * Cada hoja tiene dos columnas: el resumen (entrada, nota y, en "Sobre mi",
- * foto y CV) y la ficha propia del tipo (tecnologias, proyectos, credenciales...).
- *
- * Para un tipo nuevo: anadelo a `Panel` en content/index.ts y un `case` aqui.
- */
+// Cuerpo de cada seccion segun su tipo.
 
 import { t, type Panel, type PanelContacto, type Tech } from '@/content';
 import { button, el, richText } from './dom';
@@ -26,7 +18,6 @@ function externalLink(node: HTMLAnchorElement, href: string): void {
   }
 }
 
-/** Enlace con aspecto de boton: icono, texto y, si sale de la web, la flecha. */
 function linkButton(className: string, text: string, href: string, iconName?: string): HTMLAnchorElement {
   const a = el('a', className);
   externalLink(a, href);
@@ -36,11 +27,7 @@ function linkButton(className: string, text: string, href: string, iconName?: st
   return a;
 }
 
-/**
- * Imagen opcional del contenido (foto, captura, insignia). Ruta vacia: no hay
- * hueco. Si la ruta esta puesta pero el archivo aun no existe, desaparece sin
- * dejar un marco roto.
- */
+// ruta vacia = sin imagen; si el archivo no existe, se quita
 function optionalImage(src: string | undefined, alt: string, className: string): HTMLElement | null {
   if (!src) return null;
   const img = el('img', className);
@@ -52,14 +39,12 @@ function optionalImage(src: string | undefined, alt: string, className: string):
   return img;
 }
 
-/** Una tecnologia: su logo y su nombre. */
 function techItem(tech: Tech, tag: 'li' | 'span' = 'li'): HTMLElement {
   const node = el(tag, 'tech');
   node.append(icon(tech.icon, tech.name), el('span', 'tech-name', tech.name));
   return node;
 }
 
-/** La columna del resumen, comun a todas las hojas. */
 function renderSummary(data: Panel): HTMLElement {
   const side = el('aside', 'sheet-summary');
 
@@ -94,7 +79,6 @@ export function renderPanelBody(data: Panel): HTMLElement {
     }
 
     case 'skills': {
-      // Una tabla por grupo: tecnologia y, cuando la hay, la evidencia que la respalda.
       for (const group of data.groups) {
         const table = el('table', 'spec-table');
         const caption = el('caption');
@@ -129,7 +113,6 @@ export function renderPanelBody(data: Panel): HTMLElement {
         const stack = el('ul', 'project-stack');
         for (const tech of project.stack) stack.append(techItem(tech));
         card.append(head, rich('p', 'project-text', project.text), stack);
-        // El repositorio es la accion de la hoja: boton principal, no una etiqueta mas.
         if (project.link) {
           card.append(linkButton('btn btn-primary project-link', project.linkText, project.link, 'ph-github-logo'));
         }
@@ -140,15 +123,12 @@ export function renderPanelBody(data: Panel): HTMLElement {
 
     case 'certificaciones': {
       for (const shelf of data.shelves) {
-        // A la izquierda la marca del proveedor, tranquila; a la derecha la banda
-        // densa de credenciales con su fecha.
         const row = el('section', 'provider');
         const mark = el('header', 'provider-mark');
         const count = el('p', 'provider-count');
         count.append(el('span', 'num', String(shelf.items.length)), document.createTextNode(` ${t('credentials')}`));
         mark.append(icon(shelf.icon, shelf.name, 'icon provider-icon'), el('h3', undefined, shelf.name), count);
 
-        // Una linea por credencial: nombre, emisor y fecha; si hay, insignia y "verificar".
         const table = el('table', 'cred-table');
         const head = el('tr');
         head.append(el('th', undefined, t('credential')), el('th', undefined, t('issuer')), el('th', 'cred-date', t('date')));
@@ -182,10 +162,7 @@ export function renderPanelBody(data: Panel): HTMLElement {
   return grid;
 }
 
-/**
- * Contacto: el correo es la accion principal (con boton de copiar, que en un
- * ordenador sin cliente de correo es lo unico que funciona); el resto, debajo.
- */
+// Copiar el correo, para quien no tiene cliente de correo configurado
 function renderContact(data: PanelContacto): HTMLElement {
   const wrap = el('div', 'contact');
   const [primary, ...rest] = data.links;

@@ -140,7 +140,8 @@
       "chatter": [
         "These plants need watering.",
         "AI needs watering too.",
-        "Anything that grows takes patience."
+        "Anything that grows takes patience.",
+        "This seed is called machine learning."
       ]
     },
     "certificaciones": {
@@ -271,7 +272,8 @@
           "items": [
             {
               "name": "Python",
-              "icon": "python"
+              "icon": "python",
+              "evidence": "Python Essentials 1 and 2 (Cisco), in progress"
             },
             {
               "name": "JavaScript",
@@ -359,7 +361,7 @@
       "type": "skills",
       "place": "The greenhouse",
       "title": "Applied AI",
-      "summary": "Language models built into applications.",
+      "summary": "Language models, AI agents and machine learning.",
       "intro": "The newest part of the village: connecting language models to applications that solve something specific.",
       "groups": [
         {
@@ -383,9 +385,23 @@
               "evidence": "Developing generative applications, in progress"
             }
           ]
+        },
+        {
+          "name": "What interests me most",
+          "items": [
+            {
+              "name": "Machine learning",
+              "icon": "ph-brain"
+            },
+            {
+              "name": "AI agents",
+              "icon": "ph-robot",
+              "evidence": "MoureDev course, 28-30 Sep 2026"
+            }
+          ]
         }
       ],
-      "note": "It's the branch I'm growing the most right now, always alongside backend work."
+      "note": "It's the branch I'm growing the most right now, always alongside backend work. Machine learning is what pulls me most."
     },
     "redes": {
       "type": "skills",
@@ -642,6 +658,8 @@
       "summary": "What I'm studying this year.",
       "intro": "Sown and under way. Nothing to harvest yet, but it's coming up.",
       "items": [
+        "**Python Essentials 1 and 2 (Cisco Networking Academy):** Python from the basics to modules, exceptions and object-oriented programming.",
+        "**AI agents with MoureDev (28-30 September):** how to build agents and use AI sensibly in real projects.",
         "**CS50x (Harvard):** algorithms and data structures, to strengthen the fundamentals.",
         "**English B2:** preparing with EF SET and Cambridge Test & Train.",
         "**Spring Boot and microservices:** going deeper into the part that interests me most.",

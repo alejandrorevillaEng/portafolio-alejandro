@@ -1,35 +1,11 @@
-/*
- * Interfaz del portfolio.
- *
- * Direccion: hoja tecnica. El protagonista del primer vistazo es el mapa pixel
- * art; todo lo que se lee se abre a pantalla completa como la ficha tecnica de
- * un componente: numerada, con filetes, tablas que se escanean en segundos y
- * cada afirmacion respaldada por una fila (tecnologia, credencial, repositorio).
- *
- * Sistema (no inventar valores fuera de aqui):
- *   - Color: neutros frios + UN acento verde, reservado para "verificado / leido".
- *     El unico color extra son los logos de tecnologias, en su color real.
- *     Sin degradados, sin brillos, sin franjas de color en los laterales.
- *   - Filetes: 2 px de tinta abren cada bloque; 1 px gris separa filas.
- *   - Tipo: Bricolage Grotesque en titulos; fuente del sistema para leer;
- *     monoespaciada SOLO para cifras (numero de hoja, fechas, cuentas).
- *   - Forma: hojas a sangre (sin radio); 8 en botones, casillas de logo y
- *     capturas; 4 en marcas pequenas.
- *   - Movimiento: entradas de 200-280 ms con salida fuerte; salidas mas cortas;
- *     al pasar de hoja, la nueva entra por el lado hacia el que se lee.
- *
- * Orden: tokens · base · escenario · controles · capas (dialogo, hojas,
- * indice, bienvenida) · responsive · movimiento reducido.
- */
+/* Estilos de la interfaz. Tokens arriba; un solo color de acento. */
 
 /* --- tokens --------------------------------------------------------------- */
 
 :root {
-  /* Escenario (alrededor del mapa) */
   --stage: #111312;
   --stage-line: #262a28;
 
-  /* Hojas claras */
   --paper: #ffffff;
   --paper-2: #f3f5f6;
   --line: #dde1e4;
@@ -37,7 +13,6 @@
   --ink-2: #474e56;
   --ink-3: #676f78;
 
-  /* El unico acento: verde de la hierba de la aldea. Significa "verificado / leido". */
   --accent: #1f6b45;
   --accent-soft: #e5f0e9;
 
@@ -51,7 +26,6 @@
   --r-control: 8px;
   --r-mark: 4px;
 
-  /* Margen lateral de las hojas: crece con la pantalla y centra una columna de 1240. */
   --gutter: max(16px, min(5vw, 56px), calc((100vw - 1240px) / 2));
 
   --rule: 2px solid var(--ink);
@@ -60,7 +34,6 @@
   --shadow-sheet: 0 24px 64px rgba(0, 0, 0, 0.28);
   --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.12);
 
-  /* Curvas de salida fuertes: arrancan rapido y frenan suave. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
@@ -85,7 +58,7 @@ body {
   height: 100%;
   overflow: hidden;
   background: var(--stage);
-  color: #f2f3f1; /* texto claro sobre el escenario; cada hoja pone su tinta */
+  color: #f2f3f1;
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -105,7 +78,6 @@ a {
   background: var(--accent-soft);
 }
 
-/* Cifras (numeros de hoja, cuentas, fechas): monoespaciada y de ancho fijo. */
 .num {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
@@ -148,7 +120,6 @@ a {
   overflow: hidden;
 }
 
-/* La barra crece con transform (no con width): no obliga a recalcular el layout. */
 .loading-bar span {
   display: block;
   height: 100%;
@@ -171,10 +142,6 @@ a {
 
 /* --- escenario: mapa y marco ---------------------------------------------- */
 
-/*
- * El canvas se dibuja SIEMPRE a 832x576 y el CSS agranda el marco entero. Aqui
- * solo se decide de que tamano se ve ese marco.
- */
 #stage {
   position: fixed;
   inset: 0;
@@ -197,7 +164,7 @@ a {
 #stage-frame {
   position: relative;
   flex: none;
-  margin-inline: auto; /* centra; y si desborda, no recorta el lado izquierdo */
+  margin-inline: auto;
   aspect-ratio: 832 / 576;
   width: min(calc(100vw - 32px), calc((100vh - 32px) * 1.4444444));
   width: min(calc(100vw - 32px), calc((100dvh - 32px) * 1.4444444));
@@ -205,7 +172,6 @@ a {
   outline: 1px solid var(--stage-line);
   overflow: hidden;
   background: #1d2b1a;
-  /* Los controles de dentro se dimensionan con el marco (unidades cqw). */
   container-type: inline-size;
   container-name: frame;
 }
@@ -218,7 +184,7 @@ a {
 #game canvas {
   image-rendering: pixelated;
   display: block;
-  /* Deja al navegador arrastrar el mapa en el movil (Phaser pone "none"). */
+  /* Phaser pone none y no dejaba arrastrar el mapa en el movil */
   touch-action: pan-x pan-y !important;
 }
 
@@ -239,7 +205,6 @@ a {
 
 /* --- controles ------------------------------------------------------------ */
 
-/* Iconos: el SVG llena su caja; los de Phosphor toman el color del texto. */
 .icon {
   flex: none;
   display: inline-grid;
@@ -254,7 +219,6 @@ a {
   height: 100%;
 }
 
-/* Sin archivo de logo: las iniciales, en una casilla que ocupa lo mismo. */
 .icon-monogram {
   font: 700 0.55em/1 var(--mono);
   color: var(--ink-2);
@@ -263,7 +227,6 @@ a {
   border-radius: var(--r-mark);
 }
 
-/* Boton: 44 px de alto, texto corto, icono a la izquierda. */
 .btn {
   font: inherit;
   font-size: 0.94rem;
@@ -294,7 +257,6 @@ a {
   height: 1.15em;
 }
 
-/* La flecha de "sale de la web" va detras del texto y un punto mas discreta. */
 .icon-trail {
   opacity: 0.6;
   width: 0.95em;
@@ -302,7 +264,6 @@ a {
   transition: transform 150ms var(--ease-out);
 }
 
-/* Al pulsar, el boton cede un poco: confirma que el clic se ha oido. */
 .btn:active,
 .icon-btn:active,
 .nav-btn:active,
@@ -334,7 +295,6 @@ a {
   padding: 0.4em 0.85em;
 }
 
-/* Copiado: el acento significa "hecho", igual que "leido" en el indice. */
 .btn.is-done {
   color: var(--accent);
   border-color: var(--accent);
@@ -370,7 +330,6 @@ a {
   transition: text-decoration-color 150ms ease;
 }
 
-/* La tecla Q solo tiene sentido con teclado y raton. */
 .kbd {
   display: none;
   font: 600 0.72em/1 var(--mono);
@@ -419,7 +378,6 @@ a {
   }
 }
 
-/* Botones sobre el mapa: crecen y encogen con el marco. */
 .hud {
   position: absolute;
   top: 1.4cqw;
@@ -465,7 +423,6 @@ a {
 
 /* --- texto sobre el mapa (bocadillos, etiqueta de marcador) ------------------ */
 
-/* Ocupa el marco entero; los textos se colocan en % del mundo (ver worldText.ts). */
 .world-text {
   position: absolute;
   inset: 0;
@@ -473,7 +430,6 @@ a {
   font-size: clamp(11px, 1.2cqw, 16px);
 }
 
-/* Bocadillo: hoja blanca con su pico, anclado por abajo a la cabeza del vecino. */
 .world-bubble,
 .world-label {
   position: absolute;
@@ -514,7 +470,6 @@ a {
   opacity: 1;
 }
 
-/* La etiqueta del marcador: una linea, en negrita, sin pico. */
 .world-label {
   max-width: none;
   white-space: nowrap;
@@ -536,7 +491,6 @@ a {
   pointer-events: auto;
 }
 
-/* Hoja clara: la superficie de todo lo que se lee. Solo sombra, sin borde. */
 .sheet {
   background: var(--paper);
   color: var(--ink);
@@ -612,10 +566,6 @@ a {
 
 /* --- hojas de seccion (pantalla completa) ------------------------------------ */
 
-/*
- * La capa ES la hoja: tapa la pantalla entera, con cabecera, cuerpo con scroll
- * propio y una barra fija abajo para pasar de seccion.
- */
 .panel-layer {
   position: fixed;
   inset: 0;
@@ -633,7 +583,6 @@ a {
   transform: none;
 }
 
-/* Salida mas rapida que la entrada: el sistema responde, no hace esperar. */
 .panel-layer[data-state='closed'] {
   transition-duration: 160ms;
 }
@@ -650,7 +599,6 @@ a {
   font-family: var(--font-display);
 }
 
-/* Cabecera: referencia, titulo y lugar | cerrar. Cierra con el filete grueso. */
 .panel-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -660,7 +608,6 @@ a {
   border-bottom: var(--rule);
 }
 
-/* "AR·03 / 10": la referencia de la hoja, a escala de referencia. */
 .sheet-ref {
   margin: 0 0 12px;
   font-family: var(--mono);
@@ -668,7 +615,7 @@ a {
   font-variant-numeric: tabular-nums;
   line-height: 1;
   color: var(--ink-3);
-  overflow: hidden; /* el numero entra rodando desde abajo */
+  overflow: hidden;
 }
 
 .ref-num {
@@ -679,7 +626,7 @@ a {
 
 .panel-titles h2 {
   margin: 0;
-  outline: none; /* recibe el foco al abrir o pasar de hoja, para anunciarla */
+  outline: none;
   font-size: clamp(2.1rem, 5.4vw, 4.5rem);
   font-weight: 650;
   line-height: 1;
@@ -687,7 +634,6 @@ a {
   text-wrap: balance;
 }
 
-/* Donde vive la seccion en la aldea: debajo del titulo, como pie discreto. */
 .panel-where {
   display: flex;
   align-items: center;
@@ -705,7 +651,6 @@ a {
   scrollbar-color: var(--line) transparent;
 }
 
-/* Cuerpo: resumen (4 columnas) y ficha (8), como una hoja tecnica. */
 .sheet-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -751,7 +696,6 @@ a {
   margin-top: 20px;
 }
 
-/* La foto viene ya recortada en circulo (PNG con transparencia). */
 .summary-photo {
   display: block;
   width: 168px;
@@ -766,7 +710,6 @@ a {
   color: var(--ink);
 }
 
-/* Texto: filas numeradas, como las notas de una hoja tecnica. */
 .rows {
   list-style: none;
   margin: 0;
@@ -795,10 +738,6 @@ a {
   text-wrap: pretty;
 }
 
-/*
- * Tecnologias: una tabla por grupo, como la tabla de caracteristicas de una
- * ficha: logo y nombre a la izquierda, lo que lo respalda a la derecha.
- */
 .spec-table {
   width: 100%;
   border-collapse: collapse;
@@ -873,7 +812,6 @@ a {
   font-size: 0.7rem;
 }
 
-/* Casilla del icono de contacto: todos del mismo tamano. */
 .contact-icon {
   width: 44px;
   height: 44px;
@@ -888,7 +826,6 @@ a {
   line-height: 1.3;
 }
 
-/* Proyectos: cada uno abre con el filete grueso; nada de tarjetas flotantes. */
 .project {
   padding: 16px 0 32px;
   border-top: var(--rule);
@@ -920,7 +857,6 @@ a {
   line-height: 1.15;
 }
 
-/* Estado del proyecto: una marca con borde, no una pastilla de color. */
 .status {
   font-size: 0.8rem;
   font-weight: 650;
@@ -940,7 +876,6 @@ a {
   text-wrap: pretty;
 }
 
-/* Stack: especificaciones en linea (logo + nombre), no botones. */
 .project-stack {
   list-style: none;
   margin: 16px 0 0;
@@ -967,7 +902,6 @@ a {
   margin-top: 20px;
 }
 
-/* Certificaciones: marca tranquila del proveedor + banda densa de credenciales. */
 .provider {
   display: grid;
   grid-template-columns: minmax(150px, 13rem) minmax(0, 1fr);
@@ -976,7 +910,6 @@ a {
   border-top: var(--rule);
 }
 
-/* Las marcas de proveedor son logotipos anchos: mandan la altura, no un cuadrado. */
 .provider-icon {
   justify-items: start;
   width: auto;
@@ -1007,7 +940,6 @@ a {
   color: var(--ink-3);
 }
 
-/* La banda densa: una linea por credencial, fecha alineada a la derecha. */
 .cred-table {
   width: 100%;
   border-collapse: collapse;
@@ -1073,7 +1005,6 @@ a {
   border-radius: var(--r-control);
 }
 
-/* Contacto: el correo manda; el resto, en filas. */
 .contact-primary {
   display: flex;
   flex-wrap: wrap;
@@ -1116,7 +1047,6 @@ a {
   overflow-wrap: anywhere;
 }
 
-/* Barra de abajo: anterior | indice | siguiente. Siempre a la vista. */
 .panel-nav {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -1205,11 +1135,6 @@ a {
   }
 }
 
-/*
- * Pasar de hoja: la nueva entra por el lado hacia el que se lee y el numero
- * rueda desde abajo. Solo al cambiar de seccion (data-dir 1 / -1); al abrir,
- * la capa entera ya tiene su propia entrada.
- */
 @keyframes sheet-from-right {
   from {
     opacity: 0;
@@ -1314,7 +1239,6 @@ a {
   scrollbar-color: var(--line) transparent;
 }
 
-/* Cada entrada: numero de hoja | titulo y resumen | estado. */
 .journal-entry {
   display: grid;
   grid-template-columns: 2.4rem minmax(0, 1fr) auto;
@@ -1370,7 +1294,6 @@ a {
   line-height: 1.4;
 }
 
-/* Estado como marca: solo lo leido lleva su check (el acento = leido). */
 .entry-state {
   display: inline-flex;
   align-items: center;
@@ -1479,11 +1402,7 @@ a {
 
 /* --- responsive ------------------------------------------------------------ */
 
-/*
- * Movil y tablet en vertical. La cabecera ocupa el hueco que antes quedaba
- * vacio, y el mapa se ve lo bastante grande como para tocar a los vecinos:
- * si no cabe a lo ancho, se arrastra en horizontal.
- */
+/* Movil/tablet en vertical: cabecera arriba y mapa arrastrable */
 @media (orientation: portrait) and (max-width: 900px) {
   #stage {
     gap: 14px;
@@ -1548,8 +1467,6 @@ a {
     height: max(calc((100vw - 32px) / 1.4444444), min(56dvh, 520px));
   }
 
-  /* Los botones del mapa ya estan en la cabecera, y la ayuda se cortaria en
-     un mapa mas ancho que la pantalla: la sustituye la pista de arrastre. */
   .hud,
   .hint-bar {
     display: none;
@@ -1569,7 +1486,6 @@ a {
   }
 }
 
-/* Tablet y portatil pequeno: el resumen pasa arriba, a lo ancho. */
 @media (max-width: 960px) {
   .sheet-summary,
   .sheet-main {
@@ -1585,7 +1501,6 @@ a {
   }
 }
 
-/* Movil: cabecera en dos filas, filas mas compactas, el indice sube desde abajo. */
 @media (max-width: 640px) {
   .panel-head {
     gap: 12px;
@@ -1613,7 +1528,6 @@ a {
     margin: 0;
   }
 
-  /* Credencial en dos lineas: nombre arriba; emisor y fecha debajo. */
   .cred-table thead {
     display: none;
   }
@@ -1640,7 +1554,6 @@ a {
     white-space: normal;
   }
 
-  /* Tecnologia y evidencia, una debajo de otra. */
   .spec-table thead {
     display: none;
   }
@@ -1674,8 +1587,6 @@ a {
     flex: 1 1 100%;
   }
 
-  /* Anterior solo con su flecha; el indice solo con su icono; el titulo que
-     queda a la vista es el de la hoja siguiente, que es hacia donde se lee. */
   .panel-nav {
     grid-template-columns: auto auto minmax(0, 1fr);
     gap: 8px;
@@ -1719,7 +1630,6 @@ a {
   }
 }
 
-/* Muy estrecho: en la barra de abajo solo cabe la flecha y el titulo de destino. */
 @media (max-width: 400px) {
   .nav-label {
     display: none;
@@ -1728,8 +1638,6 @@ a {
 
 /* --- movimiento reducido ----------------------------------------------------- */
 
-/* Sin desplazamientos ni escalados: solo fundidos cortos, que siguen explicando
-   que algo aparece o desaparece. */
 @media (prefers-reduced-motion: reduce) {
   .dialogue,
   .dialogue[data-state='open'] {

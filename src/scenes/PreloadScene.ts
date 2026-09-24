@@ -11,20 +11,15 @@ export class PreloadScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // Mientras se carga, la escena no recibe update, asi que el cargador de
-    // Phaser depende de encadenar los eventos de cada fichero. Si todos vienen
-    // de cache pueden completarse antes de tiempo y la cola se queda parada a
-    // medias. Este vigilante la empuja hasta que termina.
+    // Con todo en cache la cola del loader a veces se queda parada; esto la empuja.
     this.watchdog = window.setInterval(() => {
       if (!this.load.isLoading()) return;
       (this.load as unknown as { checkLoadQueue(): void }).checkLoadQueue();
     }, 120);
 
-    // La barra de carga es DOM: se le avisa por el bus, no se toca desde aqui.
     this.load.on('progress', (value: number) => emit('load:progress', { value }));
 
-    // El mapa de Tiled, y en cuanto llega, las imagenes de sus tilesets. El
-    // exportador ya ha quitado del JSON los tilesets que no se usan.
+    // Mapa de Tiled y, cuando llega, sus tilesets
     this.load.tilemapTiledJSON(MAP_KEY, MAP_URL);
     this.load.once(`filecomplete-tilemapJSON-${MAP_KEY}`, () => {
       const data = this.cache.tilemap.get(MAP_KEY)?.data as { tilesets: Array<{ name: string; image: string }> };
@@ -33,8 +28,7 @@ export class PreloadScene extends Phaser.Scene {
 
     for (const sheet of SHEETS) {
       if (sheet.cuts) {
-        // Hoja irregular: se carga entera y los recortes se anaden a mano
-        // cuando el PNG ya esta en memoria.
+        // hoja irregular: se recorta a mano al cargar
         this.load.image(sheet.key, sheet.path);
       } else if (sheet.frameWidth && sheet.frameHeight) {
         this.load.spritesheet(sheet.key, sheet.path, {
@@ -50,7 +44,6 @@ export class PreloadScene extends Phaser.Scene {
   create(): void {
     window.clearInterval(this.watchdog);
 
-    // Recortes a medida de las hojas que no son una rejilla uniforme.
     for (const sheet of SHEETS) {
       if (!sheet.cuts || !this.textures.exists(sheet.key)) continue;
       const texture = this.textures.get(sheet.key);

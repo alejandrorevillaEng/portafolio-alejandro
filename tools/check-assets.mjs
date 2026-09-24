@@ -1,10 +1,4 @@
-/**
- * Comprueba que todas las rutas declaradas en src/world/assets.ts existen en
- * public/. Un PNG mal escrito no rompe el build, solo aparece en el juego como
- * un cuadrado verde: mejor cazarlo aqui.
- *
- *   npm run check:assets
- */
+// Falla si alguna ruta de src/world/assets.ts o del mapa no existe en public/.
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
@@ -16,7 +10,6 @@ const publicDir = resolve(here, '..', 'public');
 
 const paths = [...source.matchAll(/path: `\$\{A\}([^`]+)`/g)].map((m) => `assets${m[1]}`);
 
-// El mapa exportado de Tiled y las imagenes de sus tilesets (npm run mapa).
 const mapa = join(publicDir, 'mapa', 'aldea.json');
 if (existsSync(mapa)) {
   const { tilesets } = JSON.parse(await readFile(mapa, 'utf8'));

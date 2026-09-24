@@ -1,16 +1,5 @@
-/**
- * Genera los tilesets de Tiled (mapa/tilesets/*.tsx) a partir del catalogo
- * de tools/mapa/catalogo.mjs, y copia sus PNG a mapa/img/.
- *
- * Las animaciones (agua, fuente, antorchas, aspas del molino...) y los
- * pinceles de terreno (agua, tierra, piedra) se declaran aqui y Tiled los
- * muestra tal cual: el agua se ve moverse dentro del propio editor.
- *
- *   npm run tilesets
- *
- * Es seguro relanzarlo: solo reescribe los .tsx, nunca toca aldea.tmx.
- * OJO: no reordenes ni borres tilesets ya usados en el mapa; anade al final.
- */
+// Genera mapa/tilesets/*.tsx desde tools/mapa/catalogo.mjs y copia sus PNG a mapa/img.
+// No reordenar ni borrar tilesets ya usados en el mapa: solo anadir al final.
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';

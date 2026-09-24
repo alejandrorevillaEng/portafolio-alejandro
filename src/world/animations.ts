@@ -1,9 +1,4 @@
-/**
- * Registro central de animaciones.
- *
- * Si un personaje o un animal se mueve raro, se corrige aqui (y en CHAR_ROWS
- * de assets.ts), no repartido por las escenas.
- */
+// Animaciones de personajes, animales y clima.
 
 import Phaser from 'phaser';
 import { ANIMAL_ROWS, ANIMAL_TILE, CHAR_ROWS, FRAMES_PER_ROW, WORK_ROW, rowFrames } from './assets';
@@ -19,7 +14,7 @@ const CHARACTERS = [
   'npc_chloe',
 ] as const;
 
-/** Columnas por hoja: Fin viene en hojas de 9, el resto de 6. */
+// Fin viene en hojas de 9 columnas, el resto de 6
 const SHEET_COLS: Record<string, number> = { npc_fin: 9 };
 
 function cols(key: string): number {
@@ -63,8 +58,7 @@ export function registerAnimations(scene: Phaser.Scene): void {
   }
 
   // --- animales -----------------------------------------------------------
-  // Los indices se calculan midiendo cada hoja, porque no todas tienen el
-  // mismo numero de columnas (el cerdo tiene 9 y el resto 8). Ver ANIMAL_ROWS.
+  // el cerdo tiene 9 columnas y el resto 8, por eso se mide cada hoja
   for (const [key, filas] of Object.entries(ANIMAL_ROWS)) {
     if (!scene.textures.exists(key)) continue;
     const imagen = scene.textures.get(key).getSourceImage();
@@ -91,7 +85,6 @@ export function registerAnimations(scene: Phaser.Scene): void {
   add(anims, 'bee-fly', 'bee', [0, 1, 2, 3], 12);
 }
 
-/** Nombre de la animacion segun direccion; el lateral se resuelve con flipX. */
 export function moveAnim(texture: string, dir: 'up' | 'down' | 'left' | 'right', moving: boolean): string {
   const state = moving ? 'walk' : 'idle';
   if (dir === 'up') return `${texture}-${state}-up`;

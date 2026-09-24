@@ -24,9 +24,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png?v=2" />
     <link rel="icon" type="image/png" sizes="96x96" href="./favicon.png?v=2" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=2" />
-    <!-- Solo el fondo y la pantalla de carga van en linea, para que no haya un
-         destello blanco antes de que llegue la hoja de estilos. El layout del
-         marco vive en src/ui/styles.css (una sola fuente). -->
     <style>
       html,
       body {
@@ -45,8 +42,6 @@
         left: -9999px;
       }
     </style>
-    <!-- Bricolage Grotesque para titulos: una grotesca con caracter que no es la
-         Inter de siempre. El texto corrido usa la fuente del sistema. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -56,7 +51,7 @@
     <link rel="stylesheet" href="./src/ui/styles.css" />
   </head>
   <body>
-    <!-- Contenido base para buscadores y para quien llegue sin JS. -->
+    <!-- Para buscadores y sin JS -->
     <div id="seo-content" hidden>
       <h1>Alejandro Revilla Blanco</h1>
       <p>
@@ -105,11 +100,7 @@
     </div>
 
     <div id="stage">
-      <!-- Cabecera para movil en vertical: nombre, rol y acceso al perfil. La
-           rellena ui.ts desde content/*.json. -->
       <header id="stage-header"></header>
-      <!-- En pantallas estrechas el mapa es mas ancho que la ventana y se
-           arrastra en horizontal; en el resto, solo centra el marco. -->
       <div id="stage-scroll">
         <div id="stage-frame">
           <div id="game"></div>
@@ -119,8 +110,6 @@
       <p id="pan-hint"></p>
     </div>
 
-    <!-- Paneles, indice, dialogo y bienvenida: fijos a la ventana, fuera del
-         marco del mapa, para que en movil no queden encerrados en el. -->
     <div id="overlay-root"></div>
 
     <script type="module" src="./src/main.ts"></script>

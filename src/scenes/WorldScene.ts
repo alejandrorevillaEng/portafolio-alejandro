@@ -26,7 +26,7 @@ interface Interactable {
   marker: Marker;
 }
 
-/** Duracion de un ciclo completo de dia y noche, en milisegundos. */
+// ms
 const DAY_CYCLE = 240_000;
 
 export class WorldScene extends Phaser.Scene {
@@ -35,7 +35,6 @@ export class WorldScene extends Phaser.Scene {
   private interactables: Interactable[] = [];
   private nightOverlay!: Phaser.GameObjects.Rectangle;
   private glows: Phaser.GameObjects.Image[] = [];
-  /** Nubes, viento, hojas y lluvia. Publico para poder forzar la lluvia en desarrollo. */
   weather!: Weather;
   private animatedTiles?: AnimatedTiles;
   private talkingWith: Npc | null = null;
@@ -58,8 +57,6 @@ export class WorldScene extends Phaser.Scene {
     this.buildAnimals(aldea.animals);
     this.buildAmbience();
 
-    // Sin bounds: la camara no sigue a nadie, asi que nada le impide
-    // centrarse exactamente aunque el mundo sea mas estrecho que la ventana.
     this.cameras.main.setRoundPixels(true);
     this.applyZoom();
     this.fitMarkers();
@@ -75,21 +72,13 @@ export class WorldScene extends Phaser.Scene {
       this.talkingWith = null;
     });
     on('journal:visited', ({ id }) => this.interactables.find((i) => i.id === id)?.marker.setVisited());
-    // Al cerrar la bienvenida, los marcadores laten uno detras de otro: "estos".
     on('onboarding:done', () => this.interactables.forEach((item, i) => item.marker.attention(i * 90)));
 
     emit('world:ready', undefined);
   }
 
-  // -------------------------------------------------------------------------
-  // Mapa de Tiled
-  // -------------------------------------------------------------------------
+  // --- Mapa de Tiled ---
 
-  /**
-   * Pinta las capas de tiles tal cual vienen de Tiled, en su orden. Las de
-   * suelo y objetos quedan por debajo de vecinos y animales; las marcadas con
-   * la propiedad `encima` (tejados, copas de arbol) por encima.
-   */
   private buildMap(): Aldea {
     const map = this.make.tilemap({ key: MAP_KEY });
     const tilesets = map.tilesets.map((ts) => {
@@ -104,8 +93,6 @@ export class WorldScene extends Phaser.Scene {
     for (const data of map.layers) {
       const layer = map.createLayer(data.name, tilesets);
       if (!layer) continue;
-      // Por debajo de los personajes (que empiezan en DEPTH.entities) caben
-      // diez capas; por encima, sin limite practico.
       layer.setDepth(isOverhead(data) ? DEPTH.overhead + above++ : Math.min(below++, DEPTH.entities - 1));
       layers.push(layer);
     }
@@ -114,24 +101,16 @@ export class WorldScene extends Phaser.Scene {
     return readAldea(map);
   }
 
-  /**
-   * Humo de las chimeneas, con la animacion pixelada del propio pack. Es lo que
-   * mas diferencia una aldea viva de una maqueta.
-   */
   private buildSmoke(points: Array<[number, number]>): void {
     for (const [x, y] of points) {
-      // La bocanada dibujada del pack, pegada a la boca de la chimenea: su
-      // origen es el pie de la columna de humo, abajo a la izquierda.
+      // origen en el pie de la columna de humo
       const bocanada = this.add.sprite(x, y, 'chimneySmoke').setOrigin(0.19, 0.66);
       bocanada.play({ key: 'chimney-smoke', startFrame: Phaser.Math.Between(0, 4) });
       bocanada.setDepth(DEPTH.overhead + 51);
     }
   }
 
-  /** Halos de luz (faroles, ventanas) que se encienden al anochecer. */
   private buildLights(points: Array<[number, number]>): void {
-    // Halo con degradado radial (calido en el centro, nada en el borde). Un
-    // circulo liso encima de la noche se veia como un disco blanco pegado.
     if (!this.textures.exists('halo')) {
       const size = 64;
       const canvas = this.textures.createCanvas('halo', size, size);
@@ -150,18 +129,14 @@ export class WorldScene extends Phaser.Scene {
     for (const [x, y] of points) {
       const glow = this.add.image(x, y, 'halo');
       glow.setBlendMode(Phaser.BlendModes.ADD);
-      // Encima de la noche: si no, la propia oscuridad apagaba el halo.
       glow.setDepth(DEPTH.night + 1);
       glow.setAlpha(0);
       this.glows.push(glow);
     }
   }
 
-  // -------------------------------------------------------------------------
-  // Habitantes e interaccion
-  // -------------------------------------------------------------------------
+  // --- Habitantes e interaccion ---
 
-  /** Vecinos y carteles interactivos, cada uno con su marcador. */
   private buildMarkers(npcs: NpcSpawn[], signs: SignSpawn[]): void {
     const reduced = prefersReducedMotion();
     const total = npcs.length + signs.length;
@@ -185,8 +160,7 @@ export class WorldScene extends Phaser.Scene {
   private bindMarker(marker: Marker, id: string): void {
     marker.container.on('pointerover', () => {
       marker.hover(true);
-      // "01 · Katy · Sobre mi": su numero de hoja (el mismo del indice), quien
-      // es y que seccion abre, antes de pulsar.
+      // "01 · Katy · Sobre mi"
       const who = speaker(id);
       const title = who ? panel(who.panel)?.title : undefined;
       const { x, y } = marker.top;
@@ -199,7 +173,6 @@ export class WorldScene extends Phaser.Scene {
     marker.container.on('pointerdown', () => this.openInteractable(id));
   }
 
-  /** La zona pulsable crece si el mapa se ve pequeno (movil). */
   private fitMarkers(): void {
     const screenScale = this.scale.displaySize.width / this.scale.gameSize.width;
     for (const item of this.interactables) item.marker.fitHitArea(screenScale);
@@ -226,8 +199,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private buildAmbience(): void {
-    // Relleno opaco y la transparencia en el objeto: con relleno a 0, setAlpha()
-    // no oscurecia nada y la noche nunca llegaba a verse.
+    // relleno a 1 y alpha en el objeto; con relleno 0 setAlpha no hace nada
     this.nightOverlay = this.add.rectangle(0, 0, WORLD_W, WORLD_H, 0x0a1030, 1).setAlpha(0);
     this.nightOverlay.setOrigin(0, 0);
     this.nightOverlay.setDepth(DEPTH.night);
@@ -235,25 +207,13 @@ export class WorldScene extends Phaser.Scene {
     this.weather = new Weather(this, WORLD_W, WORLD_H);
   }
 
-  /**
-   * Vista fija: la aldea entera cabe siempre en pantalla, centrada, sin
-   * seguir a nadie. El zoom sale de encajar el ancho y el alto del mundo en
-   * el hueco disponible (el que mande, para no recortar nada) con un margen
-   * para que no quede pegado a los bordes de la ventana.
-   */
-  /**
-   * La camara va siempre 1:1 con el mundo: el canvas mide exactamente 704x544
-   * y del agrandado se encarga el CSS. Cualquier zoom fraccionario aqui
-   * ensuciaria los bordes de los tiles.
-   */
+  // camara 1:1; el escalado lo hace el CSS
   private applyZoom(): void {
     this.cameras.main.setZoom(1);
     this.cameras.main.centerOn(WORLD_W / 2, WORLD_H / 2);
   }
 
-  // -------------------------------------------------------------------------
-  // Bucle
-  // -------------------------------------------------------------------------
+  // --- Bucle ---
 
   override update(time: number, delta: number): void {
     this.animatedTiles?.update(time);
@@ -270,7 +230,6 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private updateAmbience(time: number, delta: number): void {
-    // Ciclo de dia y noche: amanece, atardece y se encienden los faroles.
     const phase = (time % DAY_CYCLE) / DAY_CYCLE;
     const darkness = Math.max(0, Math.sin((phase - 0.25) * Math.PI * 2)) * 0.5;
     this.nightOverlay.setAlpha(darkness);

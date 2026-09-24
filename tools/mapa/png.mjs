@@ -1,8 +1,4 @@
-/**
- * Lector minimo de PNG (sin dependencias). Solo hace falta para saber que
- * celdas de 16x16 de una hoja estan vacias, y asi no estampar huecos
- * transparentes encima de lo que ya hay pintado.
- */
+// Lector de PNG minimo, para saber que celdas de una hoja estan vacias.
 import { readFileSync } from 'node:fs';
 import { inflateSync } from 'node:zlib';
 
@@ -65,7 +61,6 @@ export function readPng(path) {
     prev = out;
   }
 
-  /** Alfa del pixel (x, y), 0-255. */
   function alpha(x, y) {
     const row = y * stride;
     if (colorType === 6) return pixels[row + x * 4 * (depth / 8) + 3 * (depth / 8)];
@@ -78,7 +73,6 @@ export function readPng(path) {
     return 255;
   }
 
-  /** Color del pixel (x, y) como [r, g, b, a]. Solo profundidad de 8 bits (o paleta). */
   function rgba(x, y) {
     const row = y * stride;
     if (colorType === 6) return [...pixels.subarray(row + x * 4, row + x * 4 + 4)];
@@ -93,7 +87,6 @@ export function readPng(path) {
   return { width, height, alpha, rgba, palette };
 }
 
-/** Mapa de celdas vacias de una hoja: vacia[fila][columna] = true si es transparente del todo. */
 export function emptyCells(path, tile = 16) {
   const png = readPng(path);
   const cols = Math.floor(png.width / tile);

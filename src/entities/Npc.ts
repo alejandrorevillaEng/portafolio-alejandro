@@ -9,18 +9,13 @@ export type { Facing };
 
 const BODY = { w: 12, h: 8, offsetX: 26, offsetY: 46 };
 
-/** Distancia del centro del sprite (64x64) a sus pies. */
+// del centro del sprite a los pies
 const FEET = BODY.offsetY - 32 + BODY.h;
 
-/** Cuanto se para a trabajar entre tramo y tramo del paseo (ms). */
 const PAUSE_MIN = 2200;
 const PAUSE_MAX = 5200;
 const ARRIVE_EPS = 3;
 
-/**
- * Un vecino: pasea por su ruta, se para a hacer su oficio y deja de moverse
- * mientras habla contigo.
- */
 export class Npc {
   readonly id: string;
   readonly sprite: Phaser.Physics.Arcade.Sprite;
@@ -40,7 +35,6 @@ export class Npc {
     this.texture = spawn.sprite;
     this.facing = spawn.facing ?? 'down';
 
-    // En el mapa se marca donde pisa el vecino; el sprite se centra encima.
     const x = spawn.home[0];
     const y = spawn.home[1] - FEET;
     this.sprite = scene.physics.add.sprite(x, y, spawn.sprite);
@@ -53,7 +47,6 @@ export class Npc {
     this.hasWorkAnim = scene.anims.exists(`${spawn.sprite}-work`);
 
     this.bubble = new SpeechBubble(spawn.id);
-    // Reparto inicial aleatorio para que no hablen todos a la vez al cargar.
     this.nextChatterAt = 3000 + Math.random() * 9000;
 
     this.idle();
@@ -63,7 +56,6 @@ export class Npc {
     return this.sprite.y + FEET;
   }
 
-  /** Se queda quieto, de cara a quien lo ha pulsado, mientras dura la conversacion. */
   pause(): void {
     this.busy = true;
     this.sprite.setVelocity(0, 0);
@@ -81,10 +73,9 @@ export class Npc {
     this.sprite.setDepth(DEPTH.entities + this.feetY);
     this.bubble.update(time, this.sprite.x, this.feetY - 38);
 
-    // Las frases se leen del contenido cada vez: si cambia el idioma, cambian.
+    // se lee cada vez para que siga el cambio de idioma
     const chatter = speaker(this.id)?.chatter ?? [];
     if (!this.busy && chatter.length && time >= this.nextChatterAt) {
-      // Si ya hay dos vecinos hablando, espera un poco y vuelve a intentarlo.
       if (!SpeechBubble.canSpeak()) {
         this.nextChatterAt = time + Phaser.Math.Between(1500, 4000);
       } else {
@@ -126,7 +117,6 @@ export class Npc {
     this.playMove(true);
   }
 
-  /** Parado: hace su animacion de oficio si la tiene. */
   private idle(): void {
     if (this.hasWorkAnim) {
       const key = `${this.texture}-work`;

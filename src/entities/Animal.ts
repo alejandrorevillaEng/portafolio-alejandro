@@ -4,10 +4,6 @@ import type { AnimalSpawn } from '@/world/mapa';
 
 type Facing = 'side' | 'up' | 'down';
 
-/**
- * Fauna de fondo. No colisiona ni se puede tocar: su unico trabajo es que el
- * mapa no parezca una maqueta.
- */
 export class Animal {
   readonly kind: AnimalSpawn['kind'];
   readonly sprite: Phaser.GameObjects.Sprite;
@@ -16,16 +12,11 @@ export class Animal {
   private goal: Phaser.Math.Vector2;
   private waitUntil = 0;
   private readonly bobPhase: number;
-  /** Hacia donde mira: de perfil (con flipX), hacia la camara o de espaldas. */
   private facing: Facing = 'side';
-  /** Los cuadrupedos, cuando se paran, a veces pastan en vez de quedarse quietos. */
   private grazing = false;
 
   constructor(scene: Phaser.Scene, key: string, spawn: AnimalSpawn) {
     this.kind = spawn.kind;
-    // La zona es el rectangulo dibujado en la capa "animales" del mapa de
-    // Tiled: se dibuja ya por dentro de vallas y orillas, asi que basta con no
-    // salir de ella.
     this.bounds = new Phaser.Geom.Rectangle(spawn.area.x, spawn.area.y, spawn.area.w, spawn.area.h);
 
     const start = this.freeSpot();
@@ -42,7 +33,6 @@ export class Animal {
     }
   }
 
-  /** Un punto al azar de su zona. */
   private freeSpot(): Phaser.Math.Vector2 {
     return new Phaser.Math.Vector2(
       Phaser.Math.Between(this.bounds.left, this.bounds.right),
@@ -53,9 +43,7 @@ export class Animal {
   update(time: number, delta: number): void {
     const s = this.sprite;
 
-    // Profundidad por la Y de los pies (el origen del sprite esta en el
-    // centro), como los vecinos y los objetos. El pequeno termino en x desempata
-    // dos animales a la misma altura para que no se intercambien cada frame.
+    // depth por los pies; el termino en x evita que dos a la misma altura parpadeen
     if (this.kind !== 'flyer') {
       s.setDepth(DEPTH.entities + s.y + s.displayHeight / 2 + s.x * 0.001);
     }
@@ -71,7 +59,6 @@ export class Animal {
 
     if (dist < 2) {
       this.goal = this.freeSpot();
-      // Los que vuelan no descansan; los de tierra se paran (y a veces pastan).
       this.waitUntil = this.kind === 'flyer' ? 0 : time + Phaser.Math.Between(1500, 5000);
       this.grazing = this.facing === 'side' && Math.random() < 0.6;
       return;
@@ -83,12 +70,10 @@ export class Animal {
     if (this.kind === 'flyer') {
       s.y += Math.sin(time / 260 + this.bobPhase) * 0.25;
     } else if (this.kind === 'swimmer') {
-      // Cabeceo del agua: medio pixel arriba y abajo, muy lento.
       s.y += Math.sin(time / 900 + this.bobPhase) * 0.12;
     }
 
-    // Las hojas de animales del pack miran a la IZQUIERDA: se voltean al ir a
-    // la derecha. Solo vacas, cerdos y ovejas tienen poses de frente y espaldas.
+    // los sprites del pack miran a la izquierda
     if (this.kind !== 'walker' || Math.abs(dx) >= Math.abs(dy)) {
       this.facing = 'side';
       s.setFlipX(dx > 0);
@@ -105,7 +90,6 @@ export class Animal {
 
     let key: string;
     if (this.kind === 'swimmer') {
-      // En el agua, las filas de nado (con la linea de agua dibujada).
       key = `${tex}-${moving ? 'swim-move' : 'swim'}`;
     } else if (!moving && this.grazing && anims.exists(`${tex}-graze`)) {
       key = `${tex}-graze`;

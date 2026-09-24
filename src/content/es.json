@@ -140,7 +140,8 @@
       "chatter": [
         "Estas plantas piden agua.",
         "A la IA también hay que regarla.",
-        "Lo que crece pide paciencia."
+        "Lo que crece pide paciencia.",
+        "Esta semilla se llama machine learning."
       ]
     },
     "certificaciones": {
@@ -271,7 +272,8 @@
           "items": [
             {
               "name": "Python",
-              "icon": "python"
+              "icon": "python",
+              "evidence": "Python Essentials 1 y 2 (Cisco), en curso"
             },
             {
               "name": "JavaScript",
@@ -359,7 +361,7 @@
       "type": "skills",
       "place": "El invernadero",
       "title": "IA aplicada",
-      "summary": "Modelos de lenguaje integrados en aplicaciones.",
+      "summary": "Modelos de lenguaje, agentes de IA y machine learning.",
       "intro": "Lo más nuevo de la aldea: conectar modelos de lenguaje a aplicaciones que resuelven algo concreto.",
       "groups": [
         {
@@ -383,9 +385,23 @@
               "evidence": "Desarrollo de aplicaciones generativas, en curso"
             }
           ]
+        },
+        {
+          "name": "Lo que más me interesa",
+          "items": [
+            {
+              "name": "Machine learning",
+              "icon": "ph-brain"
+            },
+            {
+              "name": "Agentes de IA",
+              "icon": "ph-robot",
+              "evidence": "Curso de MoureDev, 28-30 sep. 2026"
+            }
+          ]
         }
       ],
-      "note": "Es la rama que más estoy cultivando ahora, siempre junto al backend."
+      "note": "Es la rama que más estoy cultivando ahora, siempre junto al backend. El machine learning es lo que más me tira."
     },
     "redes": {
       "type": "skills",
@@ -642,6 +658,8 @@
       "summary": "Lo que estoy estudiando este curso.",
       "intro": "Sembrado y en marcha. Todavía no se cosecha, pero ya asoma.",
       "items": [
+        "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta módulos, excepciones y programación orientada a objetos.",
+        "**Agentes de IA con MoureDev (28-30 de septiembre):** cómo construir agentes y aplicar la IA con criterio en proyectos reales.",
         "**CS50x (Harvard):** algoritmos y estructuras de datos, para reforzar la base.",
         "**Inglés B2:** preparación con EF SET y Cambridge Test & Train.",
         "**Spring Boot y microservicios:** profundizando en la parte que más me interesa.",

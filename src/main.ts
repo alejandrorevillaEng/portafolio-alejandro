@@ -15,16 +15,11 @@ const game = new Phaser.Game({
   backgroundColor: '#1d2b1a',
   pixelArt: true,
   roundPixels: true,
-  // En el movil el mapa es mas ancho que la pantalla y se arrastra con el dedo:
-  // Phaser no debe quedarse los gestos tactiles, o el navegador no puede
-  // desplazarlo. Los toques en los iconos siguen funcionando igual.
+  // Sin esto el mapa no se puede arrastrar en el movil.
   input: { touch: { capture: false } },
   scale: {
-    // El juego se dibuja SIEMPRE al tamano real del mundo (832x576) y es el
-    // CSS quien agranda el canvas entero para llenar el marco. Es la diferencia
-    // entre pixel art nitido y pixel art sucio: si Phaser dibujara a una escala
-    // fraccionaria, cada tile caeria entre pixeles y saldrian costuras en los
-    // bordes y parpadeo en los sprites pequenos (los animales).
+    // Se dibuja siempre a 832x576 y el CSS lo escala; a escala fraccionaria
+    // salen costuras entre tiles.
     mode: Phaser.Scale.FIT,
     parent: 'game',
     expandParent: false,
@@ -39,7 +34,6 @@ const game = new Phaser.Game({
   scene: [PreloadScene, WorldScene],
 });
 
-// Solo en desarrollo: acceso al juego desde la consola del navegador.
 if (import.meta.env.DEV) {
   (window as unknown as { game: Phaser.Game }).game = game;
 }

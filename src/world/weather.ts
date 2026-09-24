@@ -1,25 +1,14 @@
-/**
- * El tiempo que hace en la aldea, con los sprites de "Weather effects" del pack.
- *
- *   - Sombras de nube (Clouds.png) que cruzan el mapa con el viento.
- *   - Rafagas de viento (Wind_Anim): un remolino que se dibuja y se deshace.
- *   - Hojas que caen de los arboles (Oak/Birch_Leaf_Particle).
- *   - Chaparrones de vez en cuando: gotas que cruzan en diagonal (Rain_Drop),
- *     salpicaduras en el suelo (Rain_Drop_Impact: la gota cae y revienta), el
- *     cielo algo mas oscuro, mas nubes y mas viento.
- *
- * Todo va por encima de la aldea y por debajo de la noche y de los marcadores.
- */
+// Nubes, viento, hojas y chaparrones de vez en cuando.
 
 import Phaser from 'phaser';
 import { DEPTH } from '@/config';
 
-/** Viento: hacia donde se mueve todo (px/s). Sopla hacia la derecha y un poco hacia abajo. */
+// px/s
 const WIND = new Phaser.Math.Vector2(9, 2.5);
 
 const CLEAR_MS: [number, number] = [70_000, 110_000];
 const RAIN_MS: [number, number] = [28_000, 42_000];
-/** Segundos que tarda en empezar o parar de llover del todo. */
+// segundos en empezar o parar de llover
 const RAMP_S = 4;
 
 export class Weather {
@@ -32,7 +21,7 @@ export class Weather {
   private readonly splashes: Phaser.GameObjects.Sprite[] = [];
 
   private raining = false;
-  /** 0 = despejado, 1 = lloviendo a tope. Sube y baja poco a poco. */
+  /** 0 despejado, 1 tormenta */
   private intensity = 0;
   private nextChange: number;
   private nextGust = 2000;
@@ -45,11 +34,10 @@ export class Weather {
     this.h = height;
     this.nextChange = Phaser.Math.Between(...CLEAR_MS) / 2;
 
-    // Oscurece un poco el mapa cuando llueve.
     this.shade = scene.add.rectangle(0, 0, width, height, 0x1c2a3a, 1).setOrigin(0, 0).setAlpha(0);
     this.shade.setDepth(DEPTH.weather - 2);
 
-    // Sombras de nube. Escala entera (2 o 3) para que el pixel art siga nitido.
+    // escala entera para que no se deforme el pixel art
     for (let i = 0; i < 7; i++) {
       const cloud = scene.add.image(
         Phaser.Math.Between(0, width),
@@ -61,20 +49,18 @@ export class Weather {
       cloud.setAlpha(0);
       cloud.setDepth(DEPTH.weather);
       cloud.setData('speed', Phaser.Math.FloatBetween(0.7, 1.3));
-      // Solo unas cuantas se ven con buen tiempo; el resto llegan con la lluvia.
       cloud.setData('always', i < 3);
       this.clouds.push(cloud);
     }
 
-    // Gotas en diagonal, a lo ancho de todo el mapa (y un poco antes, para que
-    // no quede una franja seca a la izquierda por culpa del viento).
+    // empiezan antes del borde por el viento
     this.drops = scene.add.particles(0, -16, 'rainDrop', {
       x: { min: -120, max: width },
       speedY: { min: 230, max: 270 },
       speedX: { min: 55, max: 70 },
       lifespan: 2600,
       alpha: { min: 0.7, max: 1 },
-      // La gota del pack es verdosa y se pierde sobre la hierba: mas clara.
+      // la gota del pack es verdosa, se aclara
       tint: 0xd6ecff,
       scale: 2,
       frequency: 1000,
@@ -88,7 +74,6 @@ export class Weather {
     return this.raining;
   }
 
-  /** Fuerza el tiempo (util para probar desde la consola en desarrollo). */
   setRain(on: boolean, time = this.scene.time.now): void {
     this.raining = on;
     const [min, max] = on ? RAIN_MS : CLEAR_MS;
@@ -104,7 +89,6 @@ export class Weather {
     const target = this.raining ? 1 : 0;
     this.intensity = Phaser.Math.Clamp(this.intensity + Math.sign(target - this.intensity) * (dt / RAMP_S), 0, 1);
     if (!this.raining && this.intensity === 0 && this.drops.emitting) this.drops.stop();
-    // Mas lluvia = mas gotas por segundo.
     this.drops.frequency = this.intensity > 0 ? Math.max(5, 30 / this.intensity) : 1000;
     this.drops.quantity = this.intensity > 0.6 ? 3 : 1;
 
@@ -131,7 +115,6 @@ export class Weather {
     }
   }
 
-  /** Salpicaduras: cada una es la gota cayendo y reventando contra el suelo. */
   private updateSplashes(dt: number): void {
     this.splashDebt += this.intensity * 90 * dt;
     while (this.splashDebt >= 1) {
@@ -149,7 +132,6 @@ export class Weather {
     return splash;
   }
 
-  /** Remolinos de viento: pocos con buen tiempo, muchos con tormenta. */
   private updateGusts(time: number): void {
     if (time < this.nextGust) return;
     const calm = 1 - this.intensity;
@@ -171,7 +153,6 @@ export class Weather {
     gust.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => gust.destroy());
   }
 
-  /** Hojas que se sueltan de los arboles y bajan meciendose con el viento. */
   private updateLeaves(time: number): void {
     if (time < this.nextLeaf) return;
     this.nextLeaf = time + Phaser.Math.Between(1800, 4200) * (1 - this.intensity * 0.6);
@@ -193,7 +174,6 @@ export class Weather {
       onUpdate: (tween) => {
         const t = tween.progress;
         leaf.x = startX + t * WIND.x * (life / 1000) * 2 + Math.sin(t * Math.PI * 4) * sway;
-        // Aparece, cae y se desvanece al final.
         leaf.setAlpha(Math.min(1, t * 6, (1 - t) * 4));
       },
       onComplete: () => leaf.destroy(),

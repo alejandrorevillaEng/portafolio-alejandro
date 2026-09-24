@@ -1,9 +1,4 @@
-/**
- * Contenido e idioma.
- *
- * Todo el texto del portfolio vive en es.json / en.json. Este modulo solo los
- * tipa, elige el idioma y avisa a quien lo este escuchando cuando cambia.
- */
+// Textos (es.json / en.json) e idioma
 
 import esRaw from './es.json';
 import enRaw from './en.json';
@@ -15,36 +10,33 @@ export interface Speaker {
   role: string;
   dialogue: string[];
   panel: string;
-  /** Frases sueltas para el bocadillo ambiental (charla de fondo, no el diálogo del panel). */
+  /** frases sueltas mientras pasea */
   chatter?: string[];
 }
 
-/** Lo que comparten todos los paneles. */
 interface PanelBase {
-  /** El lugar de la aldea donde vive la seccion ("La herreria"). Va discreto, debajo del titulo. */
+  /** "La herreria" */
   place: string;
-  /** El nombre real de la seccion ("Backend"). Es lo que busca quien lee. */
+  /** "Backend" */
   title: string;
-  /** Una linea para el indice: que hay dentro. */
+  /** linea del indice */
   summary: string;
   intro: string;
-  /** Remate al pie del panel. */
   note?: string;
 }
 
-/** Algo con nombre y, si hay archivo en src/ui/iconos/, su icono. */
 export interface Tech {
   name: string;
-  /** Nombre del SVG en src/ui/iconos/ sin extension. Sin archivo, salen las iniciales. */
+  /** nombre del svg en src/ui/iconos */
   icon?: string;
-  /** Lo que lo respalda (una certificacion, un proyecto). Solo si es real; si no, se deja fuera. */
+  /** certificacion o proyecto que lo respalda */
   evidence?: string;
 }
 
 export interface PanelTexto extends PanelBase {
   type: 'texto';
   items: string[];
-  /** Solo "Sobre mi": rutas dentro de public/ (vacias = no se muestran). */
+  // solo "Sobre mi"; vacio = no se muestra
   photo?: string;
   cv?: string;
 }
@@ -63,7 +55,6 @@ export interface PanelProyectos extends PanelBase {
     text: string;
     link: string;
     linkText: string;
-    /** Captura dentro de public/ (vacia = sin captura). */
     image?: string;
   }>;
 }
@@ -77,9 +68,7 @@ export interface PanelCertificaciones extends PanelBase {
       name: string;
       org: string;
       date: string;
-      /** Enlace publico de verificacion (Credly, Cisco, Oracle). Vacio = sin boton. */
       verify?: string;
-      /** Imagen de la insignia dentro de public/. Vacia = sin imagen. */
       badge?: string;
     }>;
   }>;
@@ -94,7 +83,6 @@ export type Panel = PanelTexto | PanelSkills | PanelProyectos | PanelCertificaci
 
 export interface Content {
   ui: Record<string, string>;
-  /** Orden de lectura de las secciones (ids de vecinos y carteles): indice y "siguiente". */
   order: string[];
   npcs: Record<string, Speaker>;
   signs: Record<string, Speaker>;
@@ -113,7 +101,6 @@ function detect(): Lang {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'es' || saved === 'en') return saved;
   } catch {
-    // Navegacion privada o cookies bloqueadas: seguimos con el idioma del navegador.
   }
   return navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'es';
 }
@@ -131,7 +118,6 @@ export function setLang(lang: Lang): void {
   try {
     localStorage.setItem(STORAGE_KEY, lang);
   } catch {
-    // Sin almacenamiento el idioma dura lo que dure la visita. No es critico.
   }
   document.documentElement.lang = lang;
   for (const fn of listeners) fn(lang);
@@ -146,12 +132,11 @@ export function content(): Content {
   return BUNDLES[current];
 }
 
-/** Texto de interfaz. Devuelve la clave si falta, para que el fallo se vea. */
+/** Si falta la clave devuelve la clave, para que se note. */
 export function t(key: string): string {
   return content().ui[key] ?? key;
 }
 
-/** Un hablante, sea NPC o cartel. */
 export function speaker(id: string): Speaker | undefined {
   const c = content();
   return c.npcs[id] ?? c.signs[id];
@@ -161,7 +146,6 @@ export function panel(id: string): Panel | undefined {
   return content().panels[id];
 }
 
-/** Las secciones en orden de lectura, cada una con su vecino y su panel. */
 export function sections(): Array<{ id: string; who: Speaker; panel: Panel }> {
   const c = content();
   return c.order.flatMap((id) => {
@@ -171,7 +155,7 @@ export function sections(): Array<{ id: string; who: Speaker; panel: Panel }> {
   });
 }
 
-/** Numero de hoja de una seccion ("02"), el mismo en el indice, el panel y el mapa. */
+/** "02" */
 export function sectionNumber(id: string): string {
   const at = content().order.indexOf(id);
   return at < 0 ? '' : String(at + 1).padStart(2, '0');
