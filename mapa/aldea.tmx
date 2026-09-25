@@ -570,7 +570,7 @@
  </objectgroup>
  <objectgroup id="14" name="carteles" color="#ff7a00">
  <object id="9" name="redes" type="cartel" x="192" y="176"><point/></object>
- <object id="10" name="aprendiendo" type="cartel" x="688" y="192"><point/></object>
+ <object id="10" name="aprendiendo" type="cartel" x="752" y="116"><point/></object>
  </objectgroup>
  <objectgroup id="15" name="animales" color="#55aaff">
  <object id="11" name="cow" type="animales" x="42" y="374" width="83" height="26"><properties><property name="especie" propertytype="especie" value="cow"/><property name="tipo" propertytype="tipo-animal" value="walker"/><property name="cantidad" type="int" value="1"/></properties></object>

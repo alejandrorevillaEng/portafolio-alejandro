@@ -109,10 +109,10 @@ export const MARKER_ICONS: Record<string, [key: string, frame: number]> = {
   bienvenida: ['iconFood', 64], // girasol: la plaza, la bienvenida
   'sobre-mi': ['iconFood', 15], // huevo frito: el desayuno de la posada
   proyectos: ['iconRes', 14], // lingote de oro: el mercado
-  backend: ['iconTools', 8], // martillo: la herreria
+  backend: ['iconTools', 4], // espada: la herreria (H5)
   datos: ['iconTools', 2], // pico: la mina
   ia: ['iconRes', 4], // cristal: el invernadero
-  redes: ['iconFood', 24], // trigo: el molino
+  redes: ['iconTools', 8], // farol (H9 de la hoja numerada)
   certificaciones: ['iconTools', 9], // antorcha: la capilla
   aprendiendo: ['iconTools', 6], // regadera: el huerto
   contacto: ['iconTools', 7], // cana de pescar: el estanque

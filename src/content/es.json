@@ -434,22 +434,22 @@
             {
               "name": "Enrutamiento inter-VLAN",
               "icon": "ph-arrows-split",
-              "evidence": "CCNA: Switching, Routing and Wireless Essentials · feb. 2026"
+              "evidence": "CCNA: Switching, Routing, and Wireless Essentials · feb. 2026"
             },
             {
               "name": "OSPF",
               "icon": "ph-path",
-              "evidence": "CCNA: Enterprise Networking, Security and Automation · feb. 2026"
+              "evidence": "CCNA: Enterprise Networking, Security, and Automation · feb. 2026"
             },
             {
               "name": "Switching y wireless",
               "icon": "ph-wifi-high",
-              "evidence": "CCNA: Switching, Routing and Wireless Essentials · feb. 2026"
+              "evidence": "CCNA: Switching, Routing, and Wireless Essentials · feb. 2026"
             },
             {
               "name": "Seguridad de red",
               "icon": "ph-shield-check",
-              "evidence": "CCNA: Enterprise Networking, Security and Automation · feb. 2026"
+              "evidence": "CCNA: Enterprise Networking, Security, and Automation · feb. 2026"
             }
           ]
         },
@@ -469,7 +469,7 @@
             {
               "name": "Virtualización y SDN",
               "icon": "ph-cloud",
-              "evidence": "CCNA: Enterprise Networking, Security and Automation · feb. 2026"
+              "evidence": "CCNA: Enterprise Networking, Security, and Automation · feb. 2026"
             }
           ]
         }
@@ -584,14 +584,14 @@
               "badge": ""
             },
             {
-              "name": "CCNA: Switching, Routing and Wireless Essentials",
+              "name": "CCNA: Switching, Routing, and Wireless Essentials",
               "org": "Cisco",
               "date": "feb. 2026",
               "verify": "",
               "badge": ""
             },
             {
-              "name": "CCNA: Enterprise Networking, Security and Automation",
+              "name": "CCNA: Enterprise Networking, Security, and Automation",
               "org": "Cisco",
               "date": "feb. 2026",
               "verify": "",
@@ -647,7 +647,7 @@
         "**CS50x (Harvard):** algoritmos y estructuras de datos, para reforzar la base.",
         "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta la programación orientada a objetos, con el examen **PCAP** como meta.",
         "**Agentes de IA con BIG School (Brais Moure), del 29 de septiembre al 1 de octubre:** agentes, subagentes, desarrollo guiado por especificaciones, skills y MCP.",
-        "**Inglés, de B2 a C1:** preparación con EF SET y Cambridge Test & Train.",
+        "**Inglés, de B1 a B2:** preparación con EF SET y Cambridge Test & Train.",
         "**Microsoft Learn:** desarrollo de aplicaciones generativas.",
         "**Lo siguiente, NumPy y Pandas:** la base para trabajar con datos en Python."
       ]
