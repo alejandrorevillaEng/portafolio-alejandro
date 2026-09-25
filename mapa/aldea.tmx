@@ -569,7 +569,7 @@
  <object id="8" name="contacto" type="vecino" x="144" y="512"><properties><property name="sprite" propertytype="sprite-vecino" value="npc_fin"/><property name="mirada" propertytype="mirada" value="right"/></properties><point/></object>
  </objectgroup>
  <objectgroup id="14" name="carteles" color="#ff7a00">
- <object id="9" name="redes" type="cartel" x="192" y="176"><point/></object>
+ <object id="9" name="redes" type="cartel" x="192" y="158"><point/></object>
  <object id="10" name="aprendiendo" type="cartel" x="752" y="116"><point/></object>
  </objectgroup>
  <objectgroup id="15" name="animales" color="#55aaff">
