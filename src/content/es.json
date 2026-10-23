@@ -87,15 +87,15 @@
       "name": "Bob",
       "role": "Tendero del mercado",
       "dialogue": [
-        "¡Pasa al mercado! Pocos puestos todavía, pero todo lo que ves es real.",
-        "Aquí solo se vende lo que está construido o en construcción.",
-        "Echa un vistazo a los puestos."
+        "¡Pasa al mercado! Cuatro puestos, y todo lo que ves funciona.",
+        "Aquí solo se vende lo que está construido: cada puesto tiene su código y algo que puedes probar.",
+        "El puesto de la fruta es el más suyo: lo hizo para poder hacer la compra él mismo."
       ],
       "panel": "proyectos",
       "chatter": [
         "Aquí cada puesto tiene su repositorio.",
         "Todo lo de este mercado se puede tocar.",
-        "El puesto del medio da que hablar."
+        "¿Has probado ya el escáner de la fruta?"
       ]
     },
     "backend": {
@@ -103,14 +103,14 @@
       "role": "Herrero",
       "dialogue": [
         "Cuidado con las chispas: aquí se forjan las APIs.",
-        "Java y Spring Boot. Es donde Alejandro se siente en casa.",
+        "Java es donde Alejandro se siente en casa: Jakarta EE con su API REST, y Spring Boot este curso.",
         "Un backend es como una herramienta: si está bien forjado, no falla a mitad del trabajo."
       ],
       "panel": "backend",
       "chatter": [
         "Este yunque no se enfría ni de noche.",
         "Cuidado con las chispas.",
-        "Java y Spring Boot, lo de siempre."
+        "Java, REST y Docker, lo de siempre."
       ]
     },
     "datos": {
@@ -205,10 +205,10 @@
       "items": [
         "**Posada:** quién soy y qué busco.",
         "**Mercado:** proyectos.",
-        "**Herrería:** backend con Java y Spring Boot.",
+        "**Herrería:** backend con Java, Jakarta EE y APIs REST, y programación paralela.",
         "**Mina:** bases de datos con Oracle, PL/SQL y modelado.",
         "**Invernadero:** IA aplicada.",
-        "**Molino:** redes y sistemas, CCNA y Linux.",
+        "**Molino:** redes, sistemas y seguridad: CCNA, Linux y ciberseguridad.",
         "**Capilla:** certificaciones.",
         "**Huerto:** lo que estoy estudiando ahora.",
         "**Estanque:** contacto."
@@ -222,10 +222,11 @@
       "summary": "Quién soy, qué se me da bien y qué busco.",
       "intro": "Soy Alejandro Revilla Blanco y estudio el último curso de Ingeniería Informática en la UCAM (Murcia).",
       "items": [
-        "Perfil orientado a **IA aplicada**, con una base fuerte en **datos** (Oracle, SQL) e **infraestructura** (redes, Linux).",
+        "Perfil orientado a **IA aplicada**, con una base fuerte en **datos** (Oracle, SQL) e **infraestructura** (redes, Linux), y cada vez más interés por la **ciberseguridad**.",
         "Lo que mejor se me da: modelar bien los datos antes de escribir la primera línea de código.",
         "Llego con una base poco habitual en un perfil junior: cinco certificaciones de Oracle y la ruta CCNA de Cisco completa.",
-        "Asignaturas cercanas a la IA: Sistemas Inteligentes, Ingeniería del Conocimiento, Bases de Datos y Programación Paralela.",
+        "Mis proyectos están en GitHub con tests y CI: **FructoScan**, una app que uso yo mismo para hacer la compra, y dos prácticas de la carrera que amplié por mi cuenta.",
+        "Asignaturas cercanas a lo que busco: Sistemas Inteligentes, Ingeniería del Conocimiento, Bases de Datos, Programación Paralela, Aplicaciones Distribuidas y Seguridad de la Información.",
         "Busco **prácticas a partir de enero de 2027** en IA, datos o MLOps, en Murcia o en remoto."
       ],
       "note": "**Horario:** clases de lunes a viernes por la tarde. El resto del tiempo lo reparto entre CS50x, inglés y proyectos propios.",
@@ -236,7 +237,7 @@
       "type": "skills",
       "place": "La herrería",
       "title": "Backend",
-      "summary": "Java, Spring Boot y APIs REST.",
+      "summary": "Java, Jakarta EE, APIs REST, Docker y programación paralela.",
       "intro": "Donde se forjan las APIs. Es la parte del oficio en la que quiero trabajar.",
       "groups": [
         {
@@ -248,23 +249,54 @@
               "evidence": "Certificación OCA Java SE 7 · nov. 2025"
             },
             {
+              "name": "Jakarta EE",
+              "icon": "ph-app-window",
+              "evidence": "Servlets, JSP y Jersey en Gestión universitaria"
+            },
+            {
+              "name": "APIs REST",
+              "icon": "ph-plugs-connected",
+              "evidence": "API de Gestión universitaria, documentada en OpenAPI"
+            },
+            {
               "name": "Spring Boot",
               "icon": "spring",
               "evidence": "Estudiándolo a fondo este curso, junto a microservicios"
             },
             {
-              "name": "APIs REST",
-              "icon": "ph-plugs-connected"
+              "name": "Docker",
+              "icon": "docker",
+              "evidence": "Gestión universitaria y Gradientes en paralelo"
             },
             {
-              "name": "Microservicios",
-              "icon": "ph-cube",
-              "evidence": "Estudiándolo este curso con Spring Boot"
+              "name": "Tests automáticos",
+              "icon": "ph-test-tube",
+              "evidence": "JUnit y Testcontainers, con cobertura mínima en la CI"
             },
             {
               "name": "Git y GitHub",
               "icon": "git",
-              "evidence": "Todos los proyectos están en GitHub"
+              "evidence": "Todos los proyectos, con CI en GitHub Actions"
+            }
+          ]
+        },
+        {
+          "name": "Programación paralela",
+          "items": [
+            {
+              "name": "C",
+              "icon": "c",
+              "evidence": "Gradientes en paralelo"
+            },
+            {
+              "name": "OpenMP",
+              "icon": "ph-cpu",
+              "evidence": "Escalado casi lineal hasta los 8 núcleos"
+            },
+            {
+              "name": "CUDA",
+              "icon": "nvidia",
+              "evidence": "Cuatro kernels medidos en una RTX 5070"
             }
           ]
         },
@@ -278,11 +310,13 @@
             },
             {
               "name": "JavaScript",
-              "icon": "javascript"
+              "icon": "javascript",
+              "evidence": "FructoScan"
             },
             {
               "name": "Desarrollo móvil",
-              "icon": "ph-device-mobile"
+              "icon": "ph-device-mobile",
+              "evidence": "FructoScan funciona como app instalable (PWA)"
             },
             {
               "name": "Desarrollo de escritorio",
@@ -330,8 +364,13 @@
           ]
         },
         {
-          "name": "PostgreSQL y técnicas",
+          "name": "MySQL, PostgreSQL y técnicas",
           "items": [
+            {
+              "name": "MySQL",
+              "icon": "mysql",
+              "evidence": "Gestión universitaria, con migraciones de Flyway"
+            },
             {
               "name": "PostgreSQL",
               "icon": "postgresql"
@@ -370,17 +409,17 @@
             {
               "name": "Agentes de IA",
               "icon": "ph-robot",
-              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+              "evidence": "Curso de BIG School (Brais Moure), completado · 29 sep.–1 oct. 2026"
             },
             {
               "name": "Subagentes, skills y MCP",
               "icon": "ph-tree-structure",
-              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+              "evidence": "Curso de BIG School (Brais Moure), completado · 29 sep.–1 oct. 2026"
             },
             {
               "name": "Desarrollo guiado por especificaciones",
               "icon": "ph-list-numbers",
-              "evidence": "Curso de BIG School (Brais Moure), 29 sep.–1 oct. 2026"
+              "evidence": "Curso de BIG School (Brais Moure), completado · 29 sep.–1 oct. 2026"
             },
             {
               "name": "Integración de LLMs",
@@ -414,8 +453,8 @@
     "redes": {
       "type": "skills",
       "place": "El molino",
-      "title": "Redes y sistemas",
-      "summary": "La ruta CCNA completa y Linux.",
+      "title": "Redes, sistemas y seguridad",
+      "summary": "La ruta CCNA completa, Linux y ciberseguridad.",
       "intro": "El molino no para nunca, y la infraestructura tampoco. Tengo la ruta CCNA completa, no un módulo suelto.",
       "groups": [
         {
@@ -472,6 +511,21 @@
               "evidence": "CCNA: Enterprise Networking, Security, and Automation · feb. 2026"
             }
           ]
+        },
+        {
+          "name": "Seguridad",
+          "items": [
+            {
+              "name": "Ciberseguridad y hacking ético",
+              "icon": "ph-lock-key",
+              "evidence": "Curso de BIG School, en curso desde octubre de 2026"
+            },
+            {
+              "name": "Seguridad en mis proyectos",
+              "icon": "ph-shield-check",
+              "evidence": "Escaneo de secretos, SAST y dependencias en la CI de cada repositorio"
+            }
+          ]
         }
       ],
       "note": "Los tres módulos de CCNA, completos y con credencial verificable."
@@ -480,26 +534,141 @@
       "type": "proyectos",
       "place": "El mercado",
       "title": "Proyectos",
-      "summary": "Lo que he construido o estoy construyendo.",
-      "intro": "Pocos puestos todavía, pero ninguno es de relleno.",
+      "summary": "FructoScan, dos prácticas que amplié y esta aldea.",
+      "intro": "Cuatro puestos, y en todos se puede comprobar lo que digo: la app publicada, los tests o las medidas.",
       "items": [
         {
-          "name": "scanner-fructosa",
-          "status": "En desarrollo",
+          "name": "FructoScan",
+          "status": "Publicada",
+          "context": "2026 · Proyecto personal",
           "stack": [
             {
-              "name": "Aplicación web",
-              "icon": "ph-globe"
+              "name": "JavaScript",
+              "icon": "javascript"
+            },
+            {
+              "name": "PWA",
+              "icon": "ph-device-mobile"
+            },
+            {
+              "name": "Open Food Facts",
+              "icon": "ph-barcode"
+            },
+            {
+              "name": "Tests",
+              "icon": "ph-test-tube"
             }
           ],
-          "text": "Aplicación web para escanear alimentos y consultar cuánta fructosa tienen. Nace de un problema real: quien tiene intolerancia pasa la compra leyendo etiquetas.",
-          "link": "https://github.com/alejandrorevillaEng/scanner-fructosa",
-          "linkText": "Ver en GitHub",
-          "image": ""
+          "text": "Escaneas el código de barras de un producto del súper y te dice si te conviene con intolerancia a la fructosa, y por qué. La hice porque la tengo y estaba harto de hacer la compra leyendo etiquetas una a una.",
+          "highlights": [
+            "Veredicto según tu perfil (malabsorción, intolerancia hereditaria o FODMAP), con la fructosa y el sorbitol por separado.",
+            "Si el producto no está en Open Food Facts, lee los ingredientes de una foto con OCR en el propio móvil.",
+            "Busca medicamentos en el registro oficial de la AEMPS y revisa sus excipientes.",
+            "Sin cuentas ni servidor: los datos se quedan en el móvil. Funciona sin conexión, tiene 64 tests y se publica sola en Cloudflare Pages."
+          ],
+          "links": [
+            {
+              "text": "Probar la app",
+              "href": "https://fructosa.pages.dev",
+              "icon": "ph-device-mobile"
+            },
+            {
+              "text": "Ver el código",
+              "href": "https://github.com/alejandrorevillaEng/fructoscan",
+              "icon": "ph-github-logo"
+            }
+          ],
+          "image": "proyectos/fructoscan.jpg"
+        },
+        {
+          "name": "Gestión universitaria",
+          "status": "Código abierto",
+          "context": "2026 · Práctica de Aplicaciones Distribuidas, ampliada después",
+          "stack": [
+            {
+              "name": "Java",
+              "icon": "java"
+            },
+            {
+              "name": "Jakarta EE",
+              "icon": "ph-app-window"
+            },
+            {
+              "name": "API REST",
+              "icon": "ph-plugs-connected"
+            },
+            {
+              "name": "MySQL",
+              "icon": "mysql"
+            },
+            {
+              "name": "Docker",
+              "icon": "docker"
+            }
+          ],
+          "text": "Aplicación web en Jakarta EE para gestionar titulaciones, asignaturas, alumnos y aulas, con una API REST que hace lo mismo que la web.",
+          "highlights": [
+            "Reglas de negocio de verdad: no se matricula a nadie por encima de las plazas y una asignatura solo va a un aula donde quepan sus alumnos.",
+            "MySQL con migraciones de Flyway, registro de auditoría y la API documentada en OpenAPI; un test falla si el código y la documentación no coinciden.",
+            "42 tests de integración y 4 más contra un MySQL real con Testcontainers. La CI no deja pasar nada por debajo del 75 % de cobertura.",
+            "Se levanta entera con Docker Compose."
+          ],
+          "links": [
+            {
+              "text": "Ver el código",
+              "href": "https://github.com/alejandrorevillaEng/gestion-universitaria",
+              "icon": "ph-github-logo"
+            }
+          ],
+          "image": "proyectos/gestion-universitaria.jpg"
+        },
+        {
+          "name": "Gradientes en paralelo",
+          "status": "Código abierto",
+          "context": "2026 · Práctica de Programación Paralela, ampliada después",
+          "stack": [
+            {
+              "name": "C",
+              "icon": "c"
+            },
+            {
+              "name": "OpenMP",
+              "icon": "ph-cpu"
+            },
+            {
+              "name": "CUDA",
+              "icon": "nvidia"
+            },
+            {
+              "name": "Python",
+              "icon": "python"
+            }
+          ],
+          "text": "Calcula gradientes y jacobianas en C de tres formas, en secuencial, con OpenMP en los núcleos del procesador y con CUDA en una RTX 5070, y comprueba cada resultado contra la derivada exacta.",
+          "highlights": [
+            "Al repetir las medidas vi que el «173 veces más rápida» de mi memoria original se quedaba en unas 32, y lo corregí.",
+            "Cambiar el algoritmo ganó más que paralelizar: el método por términos tarda unas 470 veces menos que el directo.",
+            "Probé a bajar a FP32 esperando que fuera más rápido. No ganaba tiempo y perdía cinco órdenes de precisión, así que se queda en FP64.",
+            "Bindings de Python, sanitizers, cppcheck y un 93 % de cobertura en la CI. Los resultados se pueden explorar en una página interactiva."
+          ],
+          "links": [
+            {
+              "text": "Ver los resultados",
+              "href": "https://alejandrorevillaeng.github.io/gradientes-paralelos/",
+              "icon": "ph-graph"
+            },
+            {
+              "text": "Ver el código",
+              "href": "https://github.com/alejandrorevillaEng/gradientes-paralelos",
+              "icon": "ph-github-logo"
+            }
+          ],
+          "image": "proyectos/gradientes-paralelos.jpg"
         },
         {
           "name": "La aldea (este portfolio)",
           "status": "Publicado",
+          "context": "2026 · Proyecto personal",
           "stack": [
             {
               "name": "Phaser 3",
@@ -519,11 +688,21 @@
             }
           ],
           "text": "Este mismo portfolio: una aldea en pixel art con el mapa diseñado en Tiled, vecinos con rutas y animaciones, y el contenido en dos idiomas. Todo el texto vive en JSON, así que ampliarlo no obliga a tocar el código.",
-          "link": "https://github.com/alejandrorevillaEng",
-          "linkText": "Ver en GitHub",
-          "image": ""
+          "highlights": [
+            "Mapa de 52 × 36 casillas, con clima, animales y vecinos que charlan solos.",
+            "Funciona en el móvil y se puede leer entero sin jugar, desde «Leer el perfil»."
+          ],
+          "links": [
+            {
+              "text": "Ver el código",
+              "href": "https://github.com/alejandrorevillaEng/portafolio-alejandro-prueba1",
+              "icon": "ph-github-logo"
+            }
+          ],
+          "image": "proyectos/la-aldea.jpg"
         }
-      ]
+      ],
+      "note": "Todo el código está en GitHub. Las dos prácticas las rehíce después de entregarlas para dejarlas como las presentaría en una empresa."
     },
     "certificaciones": {
       "type": "certificaciones",
@@ -641,14 +820,15 @@
       "type": "texto",
       "place": "El huerto",
       "title": "En qué estoy ahora",
-      "summary": "Lo que estoy estudiando este curso.",
+      "summary": "Lo que estoy estudiando y construyendo este curso.",
       "intro": "Sembrado y en marcha. Todavía no se cosecha, pero ya asoma.",
       "items": [
+        "**Ciberseguridad y Hacking Ético (BIG School):** empecé en octubre y me ha abierto otro camino además de la IA.",
         "**CS50x (Harvard):** algoritmos y estructuras de datos, para reforzar la base.",
-        "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta la programación orientada a objetos, con el examen **PCAP** como meta.",
-        "**Agentes de IA con BIG School (Brais Moure), del 29 de septiembre al 1 de octubre:** agentes, subagentes, desarrollo guiado por especificaciones, skills y MCP.",
+        "**Python Essentials 1 y 2 (Cisco Networking Academy):** Python desde la base hasta la programación orientada a objetos, con el examen **PCAP** como meta en diciembre.",
+        "**TFG:** la migración criptográfica en HTTPS: cuánto cuestan los nuevos algoritmos de intercambio de claves y firma, cómo se puede reducir ese coste y cuánto se han adoptado ya.",
+        "**Forja, mi próxima app:** una app de gimnasio que junta el registro de entrenos, la dieta (con el escáner de FructoScan) y los datos de la pulsera para saber cuándo apretar y cuándo descansar.",
         "**Inglés, de B1 a B2:** preparación con EF SET y Cambridge Test & Train.",
-        "**Microsoft Learn:** desarrollo de aplicaciones generativas.",
         "**Lo siguiente, NumPy y Pandas:** la base para trabajar con datos en Python."
       ]
     },
@@ -674,7 +854,7 @@
         {
           "label": "LinkedIn",
           "value": "Alejandro Revilla Blanco",
-          "href": "https://linkedin.com/in/alejandro-revilla-blanco-2219053b0",
+          "href": "https://www.linkedin.com/in/alejandro-revilla-blanco/",
           "icon": "linkedin"
         }
       ],

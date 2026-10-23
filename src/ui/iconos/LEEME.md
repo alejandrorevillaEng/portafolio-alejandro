@@ -8,7 +8,7 @@ Para añadir uno, descarga el SVG y guárdalo aquí con un nombre corto en minú
 
 - **Logos de tecnologías** (en su color): [Devicon](https://devicon.dev), versión
   "original" (licencia MIT), o [Simple Icons](https://simpleicons.org) (CC0).
-  Ahora mismo `cisco.svg` y `linux.svg` vienen de Simple Icons y el resto de Devicon.
+  Ahora mismo `cisco.svg`, `linux.svg` y `nvidia.svg` vienen de Simple Icons y el resto de Devicon.
 - **Iconos de concepto** (`ph-*.svg`, van en el color del texto):
   [Phosphor](https://phosphoricons.com), estilo Regular (licencia MIT).
 

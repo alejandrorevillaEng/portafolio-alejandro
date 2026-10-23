@@ -46,15 +46,25 @@ export interface PanelSkills extends PanelBase {
   groups: Array<{ name: string; items: Tech[] }>;
 }
 
+export interface ProjectLink {
+  text: string;
+  href: string;
+  icon?: string;
+}
+
 export interface PanelProyectos extends PanelBase {
   type: 'proyectos';
   items: Array<{
     name: string;
     status: string;
+    /** "2026 · Práctica de la carrera" */
+    context?: string;
     stack: Tech[];
     text: string;
-    link: string;
-    linkText: string;
+    /** lo que se puede comprobar: tests, cifras, decisiones */
+    highlights?: string[];
+    /** el primero va como botón principal */
+    links: ProjectLink[];
     image?: string;
   }>;
 }

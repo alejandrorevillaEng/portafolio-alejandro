@@ -108,14 +108,31 @@ export function renderPanelBody(data: Panel): HTMLElement {
         const shot = optionalImage(project.image, `${t('projectImage')} ${project.name}`, 'project-shot');
         if (shot) card.append(shot);
 
+        const body = el('div', 'project-body');
         const head = el('header', 'project-head');
         head.append(el('h3', undefined, project.name), el('span', 'status', project.status));
+        body.append(head);
+        if (project.context) body.append(el('p', 'project-context', project.context));
+        body.append(rich('p', 'project-text', project.text));
+
+        if (project.highlights?.length) {
+          const list = el('ul', 'project-highlights');
+          for (const item of project.highlights) list.append(rich('li', undefined, item));
+          body.append(list);
+        }
+
         const stack = el('ul', 'project-stack');
         for (const tech of project.stack) stack.append(techItem(tech));
-        card.append(head, rich('p', 'project-text', project.text), stack);
-        if (project.link) {
-          card.append(linkButton('btn btn-primary project-link', project.linkText, project.link, 'ph-github-logo'));
+        body.append(stack);
+
+        if (project.links.length) {
+          const links = el('div', 'project-links');
+          project.links.forEach((link, i) => {
+            links.append(linkButton(i === 0 ? 'btn btn-primary' : 'btn', link.text, link.href, link.icon));
+          });
+          body.append(links);
         }
+        card.append(body);
         main.append(card);
       }
       break;
