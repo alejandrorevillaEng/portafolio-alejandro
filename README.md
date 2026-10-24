@@ -1,19 +1,19 @@
 #     Portafolio de Alejandro Revilla (En desarrollo)
 
 <p align="center">
-  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro-prueba1/">
+  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro/">
     <img src="docs/image.png" alt="La aldea: portfolio jugable de Alejandro Revilla" width="720" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro-prueba1/">
+  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro/">
     <img src="https://img.shields.io/badge/%E2%96%B6%20Entrar%20en%20la%20aldea-1f6b45?style=for-the-badge" alt="Entrar en la aldea" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro-prueba1/"><b>alejandrorevillaeng.github.io/portafolio-alejandro-prueba1</b></a>
+  <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro/"><b>alejandrorevillaeng.github.io/portafolio-alejandro</b></a>
   <br />
   <sub>Funciona en ordenador y en móvil · Español e inglés</sub>
 </p>
