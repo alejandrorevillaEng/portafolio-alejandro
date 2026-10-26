@@ -103,6 +103,16 @@ Las capas de objetos no se ven en el juego: dicen dónde está cada cosa.
 - **`efectos`** — puntos de clase `humo` (justo en la boca de una chimenea: ahí nace la bocanada animada y la columna de humo) y `luz` (halo
   que se enciende al anochecer: farolas, ventanas, antorchas).
 
+## Colisiones
+
+No hay capa de colisiones que pintar: se sacan solas del mapa. Lo que haya en las
+capas `objetos` no se puede atravesar, el agua y la pared de roca de `terreno`
+tampoco, y el puente sí. Las capas `encima` no estorban. Los vecinos rodean los
+obstáculos entre punto y punto de su ruta, y los animales solo andan (o nadan) por
+lo libre de su rectángulo. Para verlo, abre la web con `?colisiones`
+(`http://localhost:5173/?colisiones`): en rojo lo que no se pisa, en azul el agua
+por la que nadan patos y cisnes.
+
 ## Añadir una hoja del pack como tileset
 
 1. Añade una línea a `TILESETS` en `tools/mapa/catalogo.mjs` (con `anim` si es una
