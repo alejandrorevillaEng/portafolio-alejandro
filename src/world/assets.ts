@@ -31,7 +31,8 @@ export const SHEETS: SheetSpec[] = [
   { key: 'cow', path: `${A}/animals/Cow/Cow_01.png`, frameWidth: 32, frameHeight: 32 },
   { key: 'pig', path: `${A}/animals/Pig/Pig_01.png`, frameWidth: 32, frameHeight: 32 },
   { key: 'sheep', path: `${A}/animals/Sheep/Sheep_01.png`, frameWidth: 32, frameHeight: 32 },
-  { key: 'butterfly', path: `${A}/animals/Butterfly/Butterfly.png`, frameWidth: 16, frameHeight: 16 },
+  // 8x8: alas cerradas y abiertas, una fila por color
+  { key: 'butterfly', path: `${A}/animals/Butterfly/Butterfly.png`, frameWidth: 8, frameHeight: 8 },
   { key: 'bee', path: `${A}/animals/Bee/Bee_Flying_Animation.png`, frameWidth: 16, frameHeight: 16 },
 
   // --- iconos de los marcadores (16x16) -----------------------------------
@@ -104,9 +105,12 @@ export const ANIMAL_ROWS: Record<string, AnimalRows> = {
 
 export const ANIMAL_TILE = 32;
 
+// Voladores con varios colores en la hoja: cada uno sale de uno al azar
+export const FLYER_COLOURS: Record<string, number> = { butterfly: 8 };
+
 // Icono sobre cada vecino: [hoja, dibujo] (Tool 10 por fila, Food 8, Resources 6)
 export const MARKER_ICONS: Record<string, [key: string, frame: number]> = {
-  bienvenida: ['iconFood', 64], // girasol: la plaza, la bienvenida
+  bienvenida: ['iconFood', 64], // girasol: la bienvenida, en el huerto
   'sobre-mi': ['iconFood', 15], // huevo frito: el desayuno de la posada
   proyectos: ['iconRes', 14], // lingote de oro: el mercado
   backend: ['iconTools', 4], // espada: la herreria (H5)

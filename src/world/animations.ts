@@ -1,7 +1,7 @@
 // Animaciones de personajes, animales y clima.
 
 import Phaser from 'phaser';
-import { ANIMAL_ROWS, ANIMAL_TILE, CHAR_ROWS, FRAMES_PER_ROW, WORK_ROW, rowFrames } from './assets';
+import { ANIMAL_ROWS, ANIMAL_TILE, CHAR_ROWS, FLYER_COLOURS, FRAMES_PER_ROW, WORK_ROW, rowFrames } from './assets';
 
 const CHARACTERS = [
   'npc_katy',
@@ -81,7 +81,7 @@ export function registerAnimations(scene: Phaser.Scene): void {
   // --- clima (se reproducen una vez y desaparecen) --------------------------
   add(anims, 'rain-impact', 'rainImpact', [0, 1, 2, 3, 4, 5, 6], 16, 0);
   add(anims, 'wind-gust', 'wind', Array.from({ length: 14 }, (_, i) => i), 14, 0);
-  add(anims, 'butterfly-fly', 'butterfly', [0, 1, 2, 3], 10);
+  for (let c = 0; c < FLYER_COLOURS.butterfly; c++) add(anims, `butterfly-fly-${c}`, 'butterfly', [c * 2, c * 2 + 1], 8);
   add(anims, 'bee-fly', 'bee', [0, 1, 2, 3], 12);
 }
 

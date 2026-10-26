@@ -3,6 +3,7 @@ import { DEPTH, WORLD_H, WORLD_W } from '@/config';
 import { registerAnimations } from '@/world/animations';
 import { AnimatedTiles } from '@/world/animatedTiles';
 import { Weather } from '@/world/weather';
+import { Colisiones } from '@/world/colisiones';
 import {
   MAP_KEY,
   isOverhead,
@@ -40,6 +41,7 @@ export class WorldScene extends Phaser.Scene {
   private talkingWith: Npc | null = null;
   private markerLabel!: MarkerLabel;
   private journalKey?: Phaser.Input.Keyboard.Key;
+  private colisiones!: Colisiones;
 
   constructor() {
     super('world');
@@ -98,6 +100,9 @@ export class WorldScene extends Phaser.Scene {
     }
 
     this.animatedTiles = new AnimatedTiles(map, layers);
+    this.colisiones = new Colisiones(map);
+    // ?colisiones pinta por donde no se puede pasar (rojo) y el agua para nadar (azul)
+    if (new URLSearchParams(location.search).has('colisiones')) this.colisiones.dibujar(this, DEPTH.overhead + 60);
     return readAldea(map);
   }
 
@@ -143,9 +148,9 @@ export class WorldScene extends Phaser.Scene {
     let index = 0;
 
     for (const spawn of npcs) {
-      const npc = new Npc(this, spawn);
+      const npc = new Npc(this, spawn, this.colisiones);
       this.npcs.push(npc);
-      const marker = new Marker(this, spawn.id, npc.sprite.x, npc.feetY, index++, total, reduced);
+      const marker = new Marker(this, spawn.id, npc.sprite.x, npc.markerY, index++, total, reduced);
       this.bindMarker(marker, spawn.id);
       this.interactables.push({ id: spawn.id, npc, marker });
     }
@@ -193,7 +198,7 @@ export class WorldScene extends Phaser.Scene {
   private buildAnimals(spawns: AnimalSpawn[]): void {
     for (const spawn of spawns) {
       for (let i = 0; i < spawn.count; i++) {
-        this.animals.push(new Animal(this, spawn.key, spawn));
+        this.animals.push(new Animal(this, spawn.key, spawn, this.colisiones));
       }
     }
   }
@@ -221,7 +226,7 @@ export class WorldScene extends Phaser.Scene {
     for (const animal of this.animals) animal.update(time, delta);
 
     for (const item of this.interactables) {
-      if (item.npc) item.marker.follow(item.npc.sprite.x, item.npc.feetY);
+      if (item.npc) item.marker.follow(item.npc.sprite.x, item.npc.markerY);
     }
 
     this.updateAmbience(time, delta);

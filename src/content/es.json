@@ -54,10 +54,10 @@
   ],
   "npcs": {
     "bienvenida": {
-      "name": "Chloe",
-      "role": "Guía de la aldea",
+      "name": "Bob",
+      "role": "Hortelano",
       "dialogue": [
-        "¡Hola! Esta es la aldea de Alejandro, y se ve entera de un vistazo.",
+        "¡Hola! Esta es la aldea de Alejandro, y desde el huerto se ve entera.",
         "Cada vecino con un icono encima guarda una parte de su perfil. Púlsalo y te lo cuenta.",
         "¿Prefieres ir al grano? Arriba tienes «Leer el perfil», con todo junto."
       ],
@@ -84,8 +84,8 @@
       ]
     },
     "proyectos": {
-      "name": "Bob",
-      "role": "Tendero del mercado",
+      "name": "Chloe",
+      "role": "Tendera del mercado",
       "dialogue": [
         "¡Pasa al mercado! Cuatro puestos, y todo lo que ves funciona.",
         "Aquí solo se vende lo que está construido: cada puesto tiene su código y algo que puedes probar.",
@@ -198,7 +198,7 @@
   "panels": {
     "bienvenida": {
       "type": "texto",
-      "place": "La plaza",
+      "place": "El huerto",
       "title": "Cómo funciona la aldea",
       "summary": "Qué hay en cada rincón de la aldea.",
       "intro": "Este es el portfolio de Alejandro Revilla Blanco. En vez de una página con scroll, una aldea que se ve de un vistazo: cada vecino guarda una parte del perfil.",

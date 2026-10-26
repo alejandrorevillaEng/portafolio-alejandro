@@ -54,10 +54,10 @@
   ],
   "npcs": {
     "bienvenida": {
-      "name": "Chloe",
-      "role": "Village guide",
+      "name": "Bob",
+      "role": "Gardener",
       "dialogue": [
-        "Hi! This is Alejandro's village, and you can see all of it at a glance.",
+        "Hi! This is Alejandro's village, and from the garden you can see all of it.",
         "Every villager with an icon above them holds one part of his profile. Tap one and they'll tell you about it.",
         "Rather get straight to it? \"Read the profile\" up top has everything in one place."
       ],
@@ -84,7 +84,7 @@
       ]
     },
     "proyectos": {
-      "name": "Bob",
+      "name": "Chloe",
       "role": "Market trader",
       "dialogue": [
         "Come on in! Four stalls, and everything you see actually works.",
@@ -198,7 +198,7 @@
   "panels": {
     "bienvenida": {
       "type": "texto",
-      "place": "The square",
+      "place": "The garden",
       "title": "How the village works",
       "summary": "What you'll find in each corner of the village.",
       "intro": "This is Alejandro Revilla Blanco's portfolio. Instead of a page you scroll, a village you can take in at a glance: each villager holds one part of the profile.",
