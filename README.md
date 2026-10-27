@@ -1,4 +1,4 @@
-#     Portafolio de Alejandro Revilla (En desarrollo)
+#     Portafolio de Alejandro Revilla 
 
 <p align="center">
   <a href="https://alejandrorevillaeng.github.io/portafolio-alejandro/">
