@@ -320,7 +320,8 @@
             },
             {
               "name": "Desktop development",
-              "icon": "ph-desktop"
+              "icon": "ph-desktop",
+              "evidence": "Software Development Fundamentals (Microsoft) · Nov 2025"
             }
           ]
         }
@@ -377,19 +378,23 @@
             },
             {
               "name": "Schema design",
-              "icon": "ph-table"
+              "icon": "ph-table",
+              "evidence": "Oracle Data Modeling and Relational Database Design · Nov 2025"
             },
             {
               "name": "Queries and subqueries",
-              "icon": "ph-funnel"
+              "icon": "ph-funnel",
+              "evidence": "Database Programming with SQL I · Nov 2025"
             },
             {
               "name": "Triggers",
-              "icon": "ph-lightning"
+              "icon": "ph-lightning",
+              "evidence": "Oracle Database: Develop PL/SQL Program Units · Nov 2025"
             },
             {
               "name": "Dynamic SQL",
-              "icon": "ph-code"
+              "icon": "ph-code",
+              "evidence": "Oracle Database: Develop PL/SQL Program Units · Nov 2025"
             }
           ]
         }
@@ -564,7 +569,7 @@
             "A verdict for your profile (malabsorption, hereditary intolerance or FODMAP), with fructose and sorbitol rated separately.",
             "If the product isn't in Open Food Facts, it reads the ingredients from a photo with on-device OCR.",
             "Looks up medicines in the official Spanish registry (AEMPS) and checks their excipients.",
-            "No accounts and no server: data stays on the phone. Works offline, has 64 tests and deploys itself to Cloudflare Pages."
+            "No accounts and no server: data stays on the phone. Works offline, has 67 tests and deploys itself to Cloudflare Pages."
           ],
           "links": [
             {

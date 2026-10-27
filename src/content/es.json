@@ -320,7 +320,8 @@
             },
             {
               "name": "Desarrollo de escritorio",
-              "icon": "ph-desktop"
+              "icon": "ph-desktop",
+              "evidence": "Software Development Fundamentals (Microsoft) · nov. 2025"
             }
           ]
         }
@@ -377,19 +378,23 @@
             },
             {
               "name": "Diseño de esquemas",
-              "icon": "ph-table"
+              "icon": "ph-table",
+              "evidence": "Oracle Data Modeling and Relational Database Design · nov. 2025"
             },
             {
               "name": "Consultas y subconsultas",
-              "icon": "ph-funnel"
+              "icon": "ph-funnel",
+              "evidence": "Conceptos fundamentales de SQL I · nov. 2025"
             },
             {
               "name": "Disparadores",
-              "icon": "ph-lightning"
+              "icon": "ph-lightning",
+              "evidence": "Oracle Database: Desarrollo de Unidades de Programa en PL/SQL · nov. 2025"
             },
             {
               "name": "SQL dinámico",
-              "icon": "ph-code"
+              "icon": "ph-code",
+              "evidence": "Oracle Database: Desarrollo de Unidades de Programa en PL/SQL · nov. 2025"
             }
           ]
         }
@@ -564,7 +569,7 @@
             "Veredicto según tu perfil (malabsorción, intolerancia hereditaria o FODMAP), con la fructosa y el sorbitol por separado.",
             "Si el producto no está en Open Food Facts, lee los ingredientes de una foto con OCR en el propio móvil.",
             "Busca medicamentos en el registro oficial de la AEMPS y revisa sus excipientes.",
-            "Sin cuentas ni servidor: los datos se quedan en el móvil. Funciona sin conexión, tiene 64 tests y se publica sola en Cloudflare Pages."
+            "Sin cuentas ni servidor: los datos se quedan en el móvil. Funciona sin conexión, tiene 67 tests y se publica sola en Cloudflare Pages."
           ],
           "links": [
             {
